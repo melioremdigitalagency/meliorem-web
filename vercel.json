@@ -1,28 +1,26 @@
 {
-  "version": 2,
-  "builds": [
+  "headers": [
     {
-      "src": "index.html",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/assets/images/g6e16ed5218633db2be1e9c20967a72d2ec646c14f9857644088e65e98de13b76038522734757b0f69a26cbc5b79b4d8e",
-      "headers": {
-        "Content-Type": "image/webp",
-        "cache-control": "public, max-age=31536000, immutable"
-      }
+      "source": "/assets/images/g6e16ed5218633db2be1e9c20967a72d2ec646c14f9857644088e65e98de13b76038522734757b0f69a26cbc5b79b4d8e",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "image/webp"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     },
     {
-      "src": "/assets/(.*)",
-      "headers": {
-        "cache-control": "public, max-age=31536000, immutable"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1"
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }

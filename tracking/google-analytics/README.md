@@ -23,7 +23,7 @@ tracking/google-analytics/
 ## Setup
 
 ### Measurement ID
-- **ID**: `G-XPTVNNMJK2`
+- **ID**: `G-5M7RJPFF5V`
 - **Type**: Google Analytics 4 (GA4)
 - **Location**: Configured in `google-analytics.js`
 
@@ -165,7 +165,7 @@ This will log all Google Analytics events to the console.
 The Measurement ID is configured in `google-analytics.js`:
 
 ```javascript
-const MEASUREMENT_ID = 'G-XPTVNNMJK2';
+const MEASUREMENT_ID = 'G-5M7RJPFF5V';
 ```
 
 To change the Measurement ID, update this constant in the file.

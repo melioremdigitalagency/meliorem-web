@@ -1,7 +1,7 @@
 # Google Analytics Configuration
 
 ## Measurement ID
-`G-XPTVNNMJK2`
+`G-5M7RJPFF5V`
 
 ## Implementation
 The Google Analytics script has been added to the `<head>` section of all HTML pages:

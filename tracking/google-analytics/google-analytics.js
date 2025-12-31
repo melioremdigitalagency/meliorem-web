@@ -2,7 +2,7 @@
  * Google Analytics 4 (GA4) Integration
  * 
  * Handles Google Analytics tracking using gtag.js.
- * Auto-initializes with Measurement ID: G-XPTVNNMJK2
+ * Auto-initializes with Measurement ID: G-5M7RJPFF5V
  * 
  * Usage:
  *   window.GoogleAnalytics.trackPageView();
@@ -13,7 +13,7 @@
   'use strict';
 
   // GA4 Measurement ID
-  const MEASUREMENT_ID = 'G-XPTVNNMJK2';
+  const MEASUREMENT_ID = 'G-5M7RJPFF5V';
 
   // Initialize dataLayer and gtag function early (before gtag.js loads)
   // This is required for Consent Mode API

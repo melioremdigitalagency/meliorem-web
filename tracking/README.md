@@ -49,7 +49,7 @@ tracking/
 
 ### GA4 Tracking
 - **Status**: ✅ Configured
-- **Measurement ID**: `G-XPTVNNMJK2`
+- **Measurement ID**: `G-5M7RJPFF5V`
 - **Implementation**: gtag.js script in `<head>` section of all HTML pages
 - **Config**: See `google-analytics/config.md`
 - **Documentation**: See `google-analytics/README.md`

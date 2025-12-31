@@ -1,0 +1,566 @@
+# One Page Budget - Cursor AI Rules
+
+## Project Overview
+This is a static website for One Page Budget, built with clean HTML, CSS, and JavaScript. We've removed WordPress and Astra dependencies to improve maintainability and enable better AI-assisted development.
+
+---
+
+## 1. Button Standardization (CRITICAL)
+
+### Always Use Standard Button Classes
+- **NEVER** create custom button styles or inline button styles
+- **ALWAYS** use the standardized button classes from `assets/css/main.css`:
+  - `.btn` - Base button class (required for all buttons)
+  - `.btn-primary` - Primary action button (dark purple background)
+  - `.btn-outline` - Secondary button with outline (transparent with border)
+  - `.btn-outline-alt` - Alternative outline style (yellow/green border)
+
+### Button Implementation Rules
+- All `<button>`, `<a>` acting as buttons, and form submit buttons MUST use `.btn` class
+- Use `.btn-primary` for primary CTAs (e.g., "Download for free", "Get Started")
+- Use `.btn-outline` or `.btn-outline-alt` for secondary actions
+- Button groups should use `.hero-buttons` or `.button-group` containers
+- **DO NOT** add inline styles to buttons (except for specific color overrides when absolutely necessary)
+- **DO NOT** create new button variants without first checking if existing classes can be used
+
+### Example:
+```html
+<!-- ✅ CORRECT -->
+<a href="#" class="btn btn-primary">Primary Action</a>
+<a href="#" class="btn btn-outline">Secondary Action</a>
+<div class="button-group">
+  <a href="#" class="btn btn-primary">Get Started</a>
+  <a href="#" class="btn btn-outline">Learn More</a>
+</div>
+
+<!-- ❌ WRONG -->
+<button style="padding: 10px; background: blue;">Click Me</button>
+<a href="#" class="custom-button">Click Me</a>
+```
+
+---
+
+## 2. Component System
+
+### Component Structure
+- Reusable UI elements MUST be created as components in `components/` directory
+- Each component should have its own folder: `components/{component-name}/`
+- Each component folder contains:
+  - `{component-name}.html` - Component markup
+  - `{component-name}.css` - Component-specific styles
+  - `{component-name}.js` - Component-specific JavaScript (if needed)
+
+### Component Loading
+- **ALWAYS** use the component loader system (`components/loader.js`)
+- Components are loaded via placeholder divs: `<div id="{component-name}-placeholder"></div>`
+- The loader automatically handles relative path resolution for different page depths
+- Current components: `header`, `footer`
+
+### Creating New Components
+- Before creating a new component, check if the element is reused across multiple pages
+- If reused 2+ times, extract it into a component
+- Follow the existing pattern: HTML file with `data-base-href` and `data-base-src` attributes for path resolution
+- Component CSS should use the `opb-` prefix for class names (e.g., `.opb-header`, `.opb-footer`)
+
+### Example:
+```html
+<!-- ✅ CORRECT - Using component system -->
+<div id="header-placeholder"></div>
+<div id="footer-placeholder"></div>
+<script src="components/loader.js"></script>
+
+<!-- ❌ WRONG - Inline header/footer -->
+<header>...</header>
+```
+
+---
+
+## 3. No WordPress/Astra Dependencies
+
+### Prohibited Classes and Patterns
+- **NEVER** use WordPress-related classes: `wp-*`, `wp-block-*`
+- **NEVER** use Astra-related classes: `ast-*`, `astra-*`
+- **NEVER** use UAG plugin classes: `uagb-*`, `uag-*`
+- **NEVER** import WordPress or Astra CSS/JS files
+- If you find any of these classes, remove them and replace with our standard classes
+
+### Clean HTML Structure
+- Use semantic HTML5 elements
+- Use our custom classes with `opb-` prefix for custom components
+- Keep HTML clean and free of framework-specific markup
+
+---
+
+## 4. CSS Variables and Naming Conventions
+
+### Color Variables
+- **ALWAYS** use CSS custom properties (variables) for colors
+- Color variables follow the pattern: `--opb-color-{number}`
+- **NEVER** hardcode color values (hex, rgb, etc.) directly in CSS
+- Current color variables:
+  - `--opb-color-0`: Purple accent (#b9b0fc)
+  - `--opb-color-1`: Yellow/green accent (#d1dc55)
+  - `--opb-color-2`: Dark purple/navy (#240246)
+  - `--opb-color-3`: Semi-transparent dark
+  - `--opb-color-4`: Light background (#f7fbfe)
+  - `--opb-color-5`: White (#ffffff)
+  - `--opb-color-6`: Light purple (#d4c4fc)
+  - `--opb-color-7`: Dark text (#240246)
+  - `--opb-color-8`: White (#ffffff)
+
+### Class Naming
+- Component classes use `opb-` prefix: `.opb-header`, `.opb-footer`, `.opb-nav`, etc.
+- Utility classes are lowercase with hyphens: `.text-center`, `.button-group`
+- **DO NOT** use BEM, OOCSS, or other naming conventions - stick to our simple pattern
+
+### Example:
+```css
+/* ✅ CORRECT */
+.my-element {
+  background-color: var(--opb-color-2);
+  color: var(--opb-color-5);
+}
+
+/* ❌ WRONG */
+.my-element {
+  background-color: #240246;
+  color: #ffffff;
+}
+```
+
+---
+
+## 5. File Structure and Organization
+
+### Directory Structure
+```
+/
+├── index.html (root page)
+├── assets/
+│   ├── css/
+│   │   └── main.css (main stylesheet - DO NOT create separate CSS files unless necessary)
+│   ├── js/
+│   │   ├── main.js (main JavaScript)
+│   │   └── {feature}.js (feature-specific JS when needed)
+│   └── images/
+├── components/
+│   ├── header/
+│   ├── footer/
+│   └── {component-name}/
+├── calculators/
+│   └── {calculator-name}/
+│       ├── index.html
+│       ├── styles.css (calculator-specific styles)
+│       └── script.js (calculator-specific JS)
+├── legal/
+│   ├── assets/ (markdown files)
+│   └── *.html
+├── features/
+├── articles/
+├── contact/
+├── tracking/
+│   ├── google-search-console/
+│   │   └── verification-config.md
+│   └── README.md
+├── sitemap.xml
+├── robots.txt
+└── vercel.json
+```
+
+### File Naming
+- HTML files: Use `index.html` for directory index pages
+- CSS files: Use `main.css` for global styles, `{feature}.css` for feature-specific styles
+- JS files: Use `main.js` for global scripts, `{feature}.js` for feature-specific scripts
+- Use lowercase with hyphens: `family-readiness-check`, not `familyReadinessCheck`
+
+### Path References
+- Always use relative paths
+- Components use `data-base-href` and `data-base-src` attributes for path resolution
+- Asset paths should be relative to the HTML file location
+
+---
+
+## 6. HTML Structure Standards
+
+### Page Template Structure
+Every HTML page should follow this structure:
+
+```html
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+  <!-- Meta tags, SEO, fonts, stylesheets -->
+  <link rel="stylesheet" href="assets/css/main.css" media="all" />
+</head>
+<body>
+  <a class="skip-link screen-reader-text" href="#main-content">Skip to content</a>
+  
+  <div id="page" class="site">
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+    
+    <div id="content" class="site-content">
+      <main id="main-content" class="site-main">
+        <!-- Page content here -->
+      </main>
+    </div>
+    
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+  </div>
+  
+  <!-- Component Loader -->
+  <script src="components/loader.js"></script>
+  
+  <!-- JavaScript -->
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
+```
+
+### Semantic HTML
+- Use semantic HTML5 elements: `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<footer>`
+- Use proper heading hierarchy (h1 → h2 → h3, etc.)
+- Include skip links for accessibility
+- Use ARIA labels where appropriate
+
+---
+
+## 7. Vercel Configuration (vercel.json)
+
+### Rules for vercel.json
+- **ALWAYS** maintain `trailingSlash: true` for consistent URL handling
+- **ALWAYS** include security headers:
+  - `X-Content-Type-Options: nosniff`
+  - `X-Frame-Options: SAMEORIGIN`
+  - `X-XSS-Protection: 1; mode=block`
+- **DO NOT** modify the rewrite rules unless absolutely necessary
+- **DO NOT** remove security headers
+
+### Current Configuration Pattern:
+```json
+{
+  "trailingSlash": true,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/$1"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ]
+}
+```
+
+---
+
+## 8. CSS and Styling Rules
+
+### Main Stylesheet
+- Global styles go in `assets/css/main.css`
+- Use section comments to organize: `/* ============================================ Section Name ============================================ */`
+- Follow the existing organization:
+  1. CSS Reset & Base Styles
+  2. Brand Color Variables
+  3. Typography
+  4. Layout & Containers
+  5. Header Styles
+  6. Footer Styles
+  7. Button Styles
+  8. Utility Classes
+
+### Responsive Design
+- Use mobile-first approach when possible
+- Breakpoints:
+  - Mobile: `max-width: 544px`
+  - Tablet: `max-width: 921px`
+  - Desktop: `922px+`
+- Test all changes at all breakpoints
+
+### Typography
+- Font family: 'Manrope', sans-serif (loaded from Google Fonts)
+- Use relative units (rem, em) for font sizes
+- Maintain consistent line-height: 1.6em for body, 1.2em for headings
+
+---
+
+## 9. JavaScript Standards
+
+### Main JavaScript
+- Global site functionality goes in `assets/js/main.js`
+- Feature-specific JavaScript goes in separate files: `assets/js/{feature}.js`
+- Component-specific JavaScript goes in component folders: `components/{component}/{component}.js`
+
+### Code Style
+- Use IIFE (Immediately Invoked Function Expression) for component code
+- Use 'use strict' mode
+- Prefer vanilla JavaScript - avoid unnecessary dependencies
+- Comment complex logic
+
+### Transition and State Management (CRITICAL)
+- **ALWAYS** implement transition locking to prevent user actions during UI transitions
+- When transitioning between states (e.g., showing/hiding elements, navigating between questions, loading new content):
+  - Set a `isTransitioning` or similar flag in state
+  - Disable all interactive elements (buttons, inputs, links) during transitions
+  - Re-enable interactions only after transition completes
+  - Check the transition flag at the start of all user-triggered functions
+- This prevents UI breakage from rapid clicking, overlapping animations, and state corruption
+- Example pattern:
+  ```javascript
+  if (state.isTransitioning) return;
+  state.isTransitioning = true;
+  disableUserInteractions();
+  // ... perform transition ...
+  // In transition complete callback:
+  state.isTransitioning = false;
+  enableUserInteractions();
+  ```
+
+---
+
+## 10. General Best Practices
+
+### Accessibility
+- Always include alt text for images
+- Use semantic HTML elements
+- Ensure keyboard navigation works
+- Include ARIA labels where needed
+- Test with screen readers when possible
+
+### Performance
+- Minimize inline styles (use classes instead)
+- Minimize inline scripts (use external JS files)
+- Optimize images before adding to assets/images/
+- Use semantic HTML for better SEO
+
+### SEO
+- Include proper meta tags (title, description, Open Graph, Twitter Cards)
+- Use Schema.org JSON-LD structured data where appropriate
+- Include canonical URLs
+- Use proper heading hierarchy
+
+### Code Quality
+- Keep HTML, CSS, and JS clean and readable
+- Comment complex logic or non-obvious decisions
+- Remove commented-out code before committing
+- Use consistent indentation (2 spaces for HTML/CSS/JS)
+
+### When Making Changes
+1. Check if a component already exists for reusable elements
+2. Check if a button class already exists before creating new styles
+3. Verify no WordPress/Astra classes are being used
+4. Ensure CSS variables are used for colors
+5. Test responsive design at all breakpoints
+6. Verify component loader works correctly
+7. Check that vercel.json security headers are maintained
+
+---
+
+## 11. Calculator-Specific Rules
+
+### Calculator Structure
+- Each calculator lives in its own directory: `calculators/{calculator-name}/`
+- Each calculator has its own `index.html`, `styles.css`, and `script.js`
+- Calculator styles can use their own color scheme if needed (but prefer using CSS variables when possible)
+- Calculators are embedded via iframe in `calculators/index.html`
+
+---
+
+## 12. Legal Pages Rules
+
+### Legal Page Structure
+- Legal pages are in `legal/` directory
+- Markdown source files are in `legal/assets/`
+- Legal pages use `assets/js/legal-pages.js` to dynamically load markdown
+- Follow the existing pattern for legal page templates
+
+---
+
+## 13. SEO and Tracking Maintenance (CRITICAL)
+
+### Tracking Folder Structure
+- Tracking and analytics configurations are stored in `tracking/` directory
+- Each tracking service has its own subfolder: `tracking/{service-name}/`
+- Current services: `cookies/`, `google-analytics/`, `pixels/`, `google-adsense/`, `google-search-console/`, `google-admob/`
+- Documentation: See `tracking/README.md` and service-specific `README.md` files
+- Cookie consent system: `tracking/cookies/` (consent logic) + `components/cookie-consent/` (UI component)
+
+### Tracking Script Implementation Rules (REQUIRED)
+
+**When adding new tracking scripts (pixels, tags, analytics):**
+
+1. **Folder Structure**: Create `tracking/{service-name}/` folder with:
+   - `{service-name}.js` - Wrapper module
+   - `README.md` - Documentation
+   - `config.md` - Configuration (if needed)
+
+2. **Consent-Aware Pattern (REQUIRED)**:
+   - **MUST** check `window.CookieConsent.hasConsent(category)` before initializing
+   - **MUST** listen for `cookieConsentUpdated` event
+   - **MUST NOT** initialize tracking without consent
+   - Categories: `'analytics'` (GA4), `'marketing'` (pixels, ads), `'essential'` (always enabled)
+
+3. **Wrapper Module Pattern**:
+   ```javascript
+   (function() {
+     'use strict';
+     const ServiceName = {
+       initialized: false,
+       init: function() {
+         if (!window.CookieConsent?.hasConsent('category')) return;
+         // Initialize tracking
+       }
+     };
+     window.ServiceName = ServiceName;
+     // Auto-initialize if consent given
+   })();
+   ```
+
+4. **Google Consent Mode (for Google services)**:
+   - **MUST** set default consent to 'denied' before gtag.js loads
+   - **MUST** update consent state when user accepts/rejects
+   - See `tracking/google-analytics/google-analytics.js` for pattern
+
+5. **Script Inclusion**:
+   - Include consent manager scripts BEFORE tracking scripts: `tracking/cookies/config.js` → `tracking/cookies/consent-manager.js`
+   - Add tracking script to `<head>` section of all HTML pages
+   - Use relative paths appropriate to page depth
+
+6. **Documentation**: Update `tracking/README.md` with new service entry
+
+### Sitemap Maintenance (REQUIRED)
+- **ALWAYS** update `sitemap.xml` when adding new public pages to the site
+- **ALWAYS** update `sitemap.xml` when removing pages from the site
+- Sitemap is located at project root: `sitemap.xml`
+- Sitemap URL: `https://onepagebudget.co.za/sitemap.xml`
+
+### When Adding a New Page:
+1. **MUST** add the new URL to `sitemap.xml` with:
+   - Full URL with trailing slash (e.g., `https://onepagebudget.co.za/new-page/`)
+   - Appropriate `lastmod` date (use current date in YYYY-MM-DD format)
+   - Appropriate `changefreq` value:
+     - `weekly` - for content pages that update regularly
+     - `monthly` - for feature pages, calculators
+     - `yearly` - for static pages like legal, contact
+   - Appropriate `priority` value:
+     - `1.0` - homepage only
+     - `0.8` - main feature pages
+     - `0.7` - secondary pages (articles, calculators)
+     - `0.6` - calculator sub-pages
+     - `0.5` - contact page
+     - `0.3` - legal pages
+2. Consider updating `lastmod` dates for parent pages if structure changes
+3. Ensure the new page has proper SEO meta tags (title, description, canonical URL)
+
+### Robots.txt Maintenance
+- `robots.txt` is located at project root
+- **ONLY** update `robots.txt` if you need to:
+  - Block specific pages from crawling
+  - Add new sitemap references
+  - Change crawl directives
+- Current configuration allows all crawlers and references the sitemap
+
+### Google Search Console
+- Verification code is stored in `tracking/google-search-console/verification-config.md`
+- Verification meta tag is in `index.html` (root) `<head>` section
+- **DO NOT** remove or modify the verification meta tag
+- If verification fails, check that the meta tag is present and accessible
+
+### Tracking Files Checklist
+When adding new pages, verify:
+- [ ] New page added to `sitemap.xml` with correct URL, lastmod, changefreq, and priority
+- [ ] New page has proper SEO meta tags (title, description, canonical)
+- [ ] New page follows HTML structure standards (Section 6)
+- [ ] If page structure changes significantly, consider updating parent page `lastmod` dates in sitemap
+- [ ] `robots.txt` reviewed (usually no changes needed)
+
+When adding new tracking scripts, verify:
+- [ ] Consent-aware initialization implemented (checks `window.CookieConsent.hasConsent()` before init)
+- [ ] Wrapper module follows pattern (see `tracking/google-analytics/google-analytics.js` or `tracking/pixels/facebook-pixel.js`)
+- [ ] Google Consent Mode API used if Google service (default 'denied', update on consent)
+- [ ] Script included in all HTML pages (after consent manager scripts)
+- [ ] Service added to `tracking/README.md`
+
+### Example Sitemap Entry:
+```xml
+<url>
+  <loc>https://onepagebudget.co.za/new-feature/</loc>
+  <lastmod>2025-01-24</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.7</priority>
+</url>
+```
+
+---
+
+## 14. Security and Anti-Bot Measures
+
+### Security Folder Structure
+- Security modules in `security/` directory (follows `tracking/` pattern)
+- Current: `security/anti-bot/` - Anti-bot protection modules
+- Documentation: `documentation/security/`
+
+### Anti-Bot Integration (REQUIRED for all forms)
+**When adding/modifying forms:**
+1. Include scripts: `config.js` → `honeypot.js` → `timestamp.js` (in that order)
+2. Add honeypot field to HTML (use `.opb-honeypot-field` class)
+3. Initialize timing: `window.initializeFormTiming(formElement, formType)` when form available
+4. Validate on submit: `validateHoneypot()` then `validateFormTiming()` before API call
+5. Reset timing: `window.resetFormTiming(formElement)` on form.reset() or modal close
+
+### Critical Principles
+- **Fail-open:** Validation returns `true` if config/script missing (don't block legitimate users)
+- **Generic errors:** NEVER reveal bot detection logic to users
+- **Configuration-driven:** Add forms to `security/anti-bot/config.js`, don't hardcode
+- **Modular:** Each validation is standalone (honeypot.js, timestamp.js)
+
+### Current Protected Forms
+- `waitlist`, `contact-us`, `dc-lead` (defined in `security/anti-bot/config.js`)
+
+### Adding New Forms
+1. Add config to `security/anti-bot/config.js` (honeypot field, timing thresholds)
+2. Add honeypot field HTML
+3. Include security scripts in page
+4. Integrate validation in submission handler
+
+---
+
+## Summary Checklist
+
+Before submitting any code changes, verify:
+- [ ] All buttons use `.btn` classes (no custom button styles)
+- [ ] Reusable elements are components in `components/` directory
+- [ ] No WordPress/Astra classes or dependencies
+- [ ] Colors use CSS variables (`--opb-color-*`)
+- [ ] File structure follows conventions
+- [ ] HTML follows page template structure
+- [ ] `vercel.json` maintains security headers and trailingSlash
+- [ ] Responsive design works at all breakpoints
+- [ ] Component loader is used for header/footer
+- [ ] Code is clean and well-commented
+- [ ] **If adding new pages**: `sitemap.xml` updated with new URL, lastmod, changefreq, and priority
+- [ ] **If adding new pages**: New page has proper SEO meta tags (title, description, canonical)
+- [ ] **If adding/modifying forms**: Anti-bot measures integrated (honeypot field, timing validation, scripts included)
+- [ ] **If adding tracking scripts**: Consent-aware initialization, wrapper module pattern, Google Consent Mode (if Google service)
+
+---
+
+**Remember**: These rules exist to maintain code quality, consistency, and enable better AI-assisted development. When in doubt, check existing code patterns before creating new ones.
+

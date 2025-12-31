@@ -1,0 +1,691 @@
+/* ============================================ CSS Reset & Base Styles ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--meliorem-font-body);
+  font-size: var(--meliorem-font-size-medium);
+  line-height: 1.55;
+  color: var(--meliorem-color-contrast);
+  background-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--meliorem-color-contrast);
+  text-decoration: underline;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+/* ============================================ Brand Color Variables ============================================ */
+
+:root {
+  /* Brand Colors */
+  --meliorem-color-accent: #d8613c;
+  --meliorem-color-base: #f9f9f9;
+  --meliorem-color-contrast: #111111;
+  --meliorem-color-base-2: #ffffff;
+  --meliorem-color-contrast-3: #A4A4A4;
+  --meliorem-color-highlight: #e0613b;
+  
+  /* Additional colors from WordPress palette (for reference/compatibility) */
+  --meliorem-color-contrast-2: #636363;
+  --meliorem-color-black: #000000;
+  --meliorem-color-white: #ffffff;
+  
+  /* Typography */
+  --meliorem-font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --meliorem-font-heading: "Cardo", Georgia, serif;
+  
+  /* Font Sizes */
+  --meliorem-font-size-small: 0.9rem;
+  --meliorem-font-size-medium: 1.05rem;
+  --meliorem-font-size-large: clamp(1.39rem, 1.39rem + ((1vw - 0.2rem) * 0.767), 1.85rem);
+  --meliorem-font-size-x-large: clamp(1.85rem, 1.85rem + ((1vw - 0.2rem) * 1.083), 2.5rem);
+  --meliorem-font-size-xx-large: clamp(2.5rem, 2.5rem + ((1vw - 0.2rem) * 1.283), 3.27rem);
+  
+  /* Spacing */
+  --meliorem-spacing-10: 1rem;
+  --meliorem-spacing-20: min(1.5rem, 2vw);
+  --meliorem-spacing-30: min(2.5rem, 3vw);
+  --meliorem-spacing-40: min(4rem, 5vw);
+  --meliorem-spacing-50: min(6.5rem, 8vw);
+  --meliorem-spacing-60: min(10.5rem, 13vw);
+  --meliorem-spacing-70: 3.38rem;
+  
+  /* Layout */
+  --meliorem-content-width: 620px;
+  --meliorem-wide-width: 1280px;
+  
+  /* Border Radius */
+  --meliorem-border-radius-small: 0.33rem;
+  --meliorem-border-radius-medium: 8px;
+  --meliorem-border-radius-large: 10px;
+}
+
+/* ============================================ Font Face Declarations ============================================ */
+
+@font-face {
+  font-family: "Cardo";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/cardo/cardo_normal_400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Cardo";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/cardo/cardo_italic_400.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Cardo";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/cardo/cardo_normal_700.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/inter/Inter-VariableFont_slnt,wght.woff2") format("woff2-variations");
+}
+
+/* ============================================ Typography ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--meliorem-font-heading);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--meliorem-color-contrast);
+  margin: 0;
+}
+
+h1 {
+  font-size: var(--meliorem-font-size-xx-large);
+  line-height: 1.15;
+}
+
+h2 {
+  font-size: var(--meliorem-font-size-x-large);
+}
+
+h3 {
+  font-size: var(--meliorem-font-size-large);
+}
+
+h4 {
+  font-size: clamp(1.1rem, 1.1rem + ((1vw - 0.2rem) * 0.767), 1.5rem);
+}
+
+h5 {
+  font-size: var(--meliorem-font-size-medium);
+}
+
+h6 {
+  font-size: var(--meliorem-font-size-small);
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+/* ============================================ Layout & Containers ============================================ */
+
+.site {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-main {
+  flex: 1;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--meliorem-content-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--meliorem-spacing-50);
+  padding-right: var(--meliorem-spacing-50);
+}
+
+.container-wide {
+  width: 100%;
+  max-width: var(--meliorem-wide-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--meliorem-spacing-50);
+  padding-right: var(--meliorem-spacing-50);
+}
+
+.container-full {
+  width: 100%;
+  padding-left: var(--meliorem-spacing-50);
+  padding-right: var(--meliorem-spacing-50);
+}
+
+/* Section spacing */
+.section {
+  padding-top: var(--meliorem-spacing-60);
+  padding-bottom: var(--meliorem-spacing-60);
+}
+
+.section-small {
+  padding-top: var(--meliorem-spacing-40);
+  padding-bottom: var(--meliorem-spacing-40);
+}
+
+/* ============================================ Buttons ============================================ */
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1rem;
+  font-family: inherit;
+  font-size: var(--meliorem-font-size-small);
+  font-weight: 500;
+  line-height: inherit;
+  text-decoration: none;
+  text-align: center;
+  border: 0;
+  border-radius: var(--meliorem-border-radius-small);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--meliorem-color-contrast);
+  color: var(--meliorem-color-base);
+  border-color: var(--meliorem-color-contrast);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: var(--meliorem-color-contrast-2);
+  border-color: var(--meliorem-color-contrast-2);
+  color: var(--meliorem-color-base);
+  text-decoration: none;
+}
+
+.btn-primary:active {
+  background-color: var(--meliorem-color-contrast);
+  color: var(--meliorem-color-base);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--meliorem-color-accent);
+  border: 2px solid var(--meliorem-color-accent);
+}
+
+.btn-ghost:hover,
+.btn-ghost:focus {
+  background-color: var(--meliorem-color-accent);
+  color: var(--meliorem-color-contrast);
+  text-decoration: none;
+}
+
+.btn-white {
+  background-color: #fffffe;
+  color: #0f0e17;
+}
+
+.btn-white:hover,
+.btn-white:focus {
+  background-color: #0f0e17;
+  color: #fffffe;
+  border-color: #fffffe;
+  border-width: 2px;
+  border-style: solid;
+  text-decoration: none;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ============================================ Hero Section ============================================ */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 1;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+/* ============================================ Service Cards ============================================ */
+
+.service-card {
+  border: 2px solid var(--meliorem-color-base-2);
+  border-radius: var(--meliorem-border-radius-large);
+  padding: var(--meliorem-spacing-10);
+  display: flex;
+  flex-direction: column;
+  gap: var(--meliorem-spacing-10);
+}
+
+.service-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 2em;
+}
+
+.service-card-content {
+  flex: 1;
+  flex-basis: 70%;
+}
+
+.service-card-title {
+  color: var(--meliorem-color-base-2);
+  margin-bottom: 0.5em;
+}
+
+.service-card-description {
+  color: var(--meliorem-color-base-2);
+  font-size: var(--meliorem-font-size-small);
+}
+
+.service-card-actions {
+  margin-top: var(--meliorem-spacing-20);
+  display: flex;
+  align-items: flex-end;
+}
+
+/* ============================================ Footer ============================================ */
+
+.site-footer {
+  position: relative;
+  min-height: 400px;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  padding: var(--meliorem-spacing-50);
+}
+
+.site-footer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.footer-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.footer-logo {
+  margin-bottom: 2rem;
+}
+
+.footer-logo img {
+  width: 120px;
+  height: auto;
+}
+
+.footer-columns {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+.footer-contact-info h3 {
+  color: #0f0e17;
+  margin-bottom: 1rem;
+}
+
+.footer-contact-info h4 {
+  color: #fffffe;
+  margin-bottom: 1rem;
+}
+
+.footer-contact-info p {
+  color: var(--meliorem-color-contrast-3);
+  margin-bottom: 0.5rem;
+}
+
+.footer-contact-info p.contact-value {
+  color: #fffffe;
+  margin-bottom: 1rem;
+}
+
+.footer-social {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.social-icon {
+  display: inline-block;
+  width: 47px;
+  height: 47px;
+  color: var(--meliorem-color-black);
+  transition: color 0.2s ease;
+}
+
+.social-icon:hover {
+  color: var(--meliorem-color-accent);
+}
+
+.social-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+/* ============================================ Utility Classes ============================================ */
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.highlight {
+  color: var(--meliorem-color-highlight);
+}
+
+.bg-dark {
+  background-color: var(--meliorem-color-contrast);
+}
+
+.bg-light {
+  background-color: var(--meliorem-color-base);
+}
+
+.text-white {
+  color: var(--meliorem-color-base-2);
+}
+
+.text-gray {
+  color: var(--meliorem-color-contrast-3);
+}
+
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -9999px;
+  left: 0;
+  z-index: 999999;
+  padding: 1em;
+  background-color: #eee;
+  color: #444;
+  text-decoration: none;
+}
+
+.skip-link:focus {
+  top: 0;
+  position: fixed;
+}
+
+.screen-reader-text {
+  border: 0;
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
+}
+
+.screen-reader-text:focus {
+  background-color: #eee;
+  clip-path: none;
+  color: #444;
+  display: block;
+  font-size: 1em;
+  height: auto;
+  left: 5px;
+  line-height: normal;
+  padding: 15px 23px 14px;
+  text-decoration: none;
+  top: 5px;
+  width: auto;
+  z-index: 100000;
+}
+
+/* ============================================ Responsive Design ============================================ */
+
+@media (max-width: 767px) {
+  .container,
+  .container-wide,
+  .container-full {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .service-card-header {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .service-card-content {
+    flex-basis: 100%;
+  }
+  
+  .footer-columns {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-social {
+    justify-content: flex-start;
+  }
+}
+
+@media (min-width: 768px) {
+  .footer-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .footer-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--meliorem-spacing-50);
+  }
+}
+
+/* Two-column layout for performance section */
+.two-column {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--meliorem-spacing-10);
+  align-items: stretch;
+}
+
+@media (min-width: 768px) {
+  .two-column {
+    grid-template-columns: 40% 60%;
+    gap: var(--meliorem-spacing-10);
+  }
+}
+
+/* Additional section-specific styles */
+.section {
+  margin-top: var(--meliorem-spacing-40);
+}
+
+/* Hero section specific styles */
+.hero h1 {
+  margin-bottom: 1rem;
+  color: var(--meliorem-color-base-2);
+}
+
+.hero h3 {
+  margin-bottom: var(--meliorem-spacing-20);
+  color: var(--meliorem-color-base-2);
+}
+
+/* VIA MELIOR section */
+#via-melior {
+  padding-top: var(--meliorem-spacing-40);
+  padding-bottom: var(--meliorem-spacing-40);
+}
+
+#via-melior h4 {
+  margin-bottom: var(--meliorem-spacing-30);
+}
+
+/* Core offerings section adjustments */
+.bg-dark {
+  padding-top: var(--meliorem-spacing-60);
+  padding-bottom: var(--meliorem-spacing-60);
+}
+
+/* Performance section spacing */
+.two-column h2 {
+  margin-bottom: 0;
+}
+
+.two-column h4 {
+  margin-bottom: 1rem;
+}
+
+.two-column p {
+  margin-top: 0;
+}
+
+/* Custom logo styles */
+.custom-logo {
+  width: 120px;
+  height: auto;
+}
+
+/* Footer contact info specific styles */
+.footer-contact-info h3 {
+  margin-bottom: 1rem;
+}
+
+.footer-contact-info h4 {
+  margin-bottom: 1rem;
+}
+
+.footer-contact-info p {
+  margin-bottom: 0.5rem;
+}
+
+.footer-contact-info p.contact-value {
+  margin-bottom: 1rem;
+}
+
+/* Three-column layout for service cards */
+.three-column {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--meliorem-spacing-30) var(--meliorem-spacing-50);
+}
+
+@media (min-width: 782px) {
+  .three-column {
+    grid-template-columns: repeat(3, 1fr);
+    flex-wrap: nowrap;
+  }
+}
+
+/* Flex utilities */
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-start {
+  align-items: flex-start;
+}
+
+.flex-space-between {
+  justify-content: space-between;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+/* Spacing utilities */
+.mt-0 { margin-top: 0; }
+.mb-0 { margin-bottom: 0; }
+.pt-0 { padding-top: 0; }
+.pb-0 { padding-bottom: 0; }
+

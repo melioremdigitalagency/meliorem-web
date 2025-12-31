@@ -1,0 +1,128 @@
+/* Contact Form Component Styles */
+
+.contact-form-wrapper {
+  width: 100%;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-size: var(--meliorem-font-size-small);
+  color: var(--meliorem-color-base-2);
+  font-weight: 500;
+}
+
+.form-label.required::after {
+  content: '*';
+  margin-left: 0.25rem;
+  color: var(--meliorem-color-accent);
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  font-family: var(--meliorem-font-body);
+  font-size: var(--meliorem-font-size-medium);
+  line-height: 1.5;
+  color: var(--meliorem-color-contrast);
+  background-color: var(--meliorem-color-base-2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--meliorem-border-radius-small);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--meliorem-color-accent);
+  box-shadow: 0 0 0 2px rgba(216, 97, 60, 0.2);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: var(--meliorem-color-contrast-3);
+  opacity: 0.7;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-input.error,
+.form-textarea.error {
+  border-color: #cf2e2e;
+}
+
+.form-error {
+  display: none;
+  font-size: 0.875rem;
+  color: #cf2e2e;
+  margin-top: 0.25rem;
+}
+
+.form-error.show {
+  display: block;
+}
+
+.form-actions {
+  margin-top: 0.5rem;
+}
+
+.form-submit {
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: var(--meliorem-font-size-medium);
+  font-weight: 500;
+}
+
+.form-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.form-message {
+  display: none;
+  padding: 1rem;
+  margin-top: 1rem;
+  border-radius: var(--meliorem-border-radius-small);
+  font-size: var(--meliorem-font-size-medium);
+  text-align: center;
+}
+
+.form-message.show {
+  display: block;
+}
+
+.form-success {
+  background-color: rgba(0, 208, 130, 0.1);
+  color: #00d084;
+  border: 1px solid #00d084;
+}
+
+.form-error {
+  background-color: rgba(207, 46, 46, 0.1);
+  color: #cf2e2e;
+  border: 1px solid #cf2e2e;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .form-input,
+  .form-textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
+

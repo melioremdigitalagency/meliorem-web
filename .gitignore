@@ -1,60 +1,102 @@
+# Meliorem - .gitignore
+
+# ============================================
+# User-Specified Directories
+# ============================================
+.cursor/
+READMEs/
+
+# ============================================
 # Operating System Files
+# ============================================
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
 .DS_Store
-.DS_Store?
+.AppleDouble
+.LSOverride
 ._*
 .Spotlight-V100
 .Trashes
-ehthumbs.db
-Thumbs.db
-Desktop.ini
 
-# Editor and IDE Files
-.vscode/
-.idea/
-*.swp
-*.swo
+# Linux
 *~
-.project
-.classpath
-.settings/
+.directory
+.Trash-*
+
+# ============================================
+# Editor/IDE Files
+# ============================================
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs (IntelliJ IDEA, WebStorm, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Sublime Text
 *.sublime-project
 *.sublime-workspace
 
-# Logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+# Vim
+*.swp
+*.swo
+.vim/
 
-# Environment Variables
+# Emacs
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+
+# ============================================
+# Deployment Files (Vercel)
+# ============================================
+.vercel/
+
+# ============================================
+# Environment and Configuration Files
+# ============================================
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*.local
+*.local
+config.local.js
 
-# Dependencies (if you add build tools later)
-node_modules/
-.pnp
-.pnp.js
+# ============================================
+# Logs and Temporary Files
+# ============================================
+*.log
+*.tmp
+*.temp
+.cache/
+tmp/
+temp/
 
-# Build outputs (if you add build tools later)
+# ============================================
+# Backup Files
+# ============================================
+*.bak
+*.backup
+.backup/
+backups/
+
+# ============================================
+# Build Artifacts (Future-proofing)
+# ============================================
 dist/
 build/
 .next/
 out/
+*.map
 
-# Vercel
 .vercel
-
-# Temporary files
-*.tmp
-*.temp
-.cache/
-
-# Backup files
-*.bak
-*.backup
-*~
-

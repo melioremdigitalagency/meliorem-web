@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://meliorem.co.za/sitemap.xml
+

@@ -1,17 +1,17 @@
 # Google Search Console Verification
 
 ## Verification Code
-`EFGOS7ub5G3o7144KRnMBP1oYqnznOWieMg6boJIy0U`
+`QewAjzn1lS8YvggaRSM8aZCfxDUQ3bLcrFlCBlOGlCQ`
 
 ## Implementation
 The verification meta tag has been added to the `<head>` section of `index.html`:
 
 ```html
-<meta name="google-site-verification" content="EFGOS7ub5G3o7144KRnMBP1oYqnznOWieMg6boJIy0U" />
+<meta name="google-site-verification" content="QewAjzn1lS8YvggaRSM8aZCfxDUQ3bLcrFlCBlOGlCQ" />
 ```
 
 ## Verification Date
-2025-01-24
+2025-12-31
 
 ## Notes
 - Verification is implemented via HTML meta tag method

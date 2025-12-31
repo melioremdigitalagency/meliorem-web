@@ -11,6 +11,22 @@
 	<link rel="icon" href="/assets/images/meliorem-logo-ideation-3-150x150.png" sizes="32x32" />
 <link rel="icon" href="/assets/images/meliorem-logo-ideation-3-300x300.png" sizes="192x192" />
 <link rel="apple-touch-icon" href="/assets/images/meliorem-logo-ideation-3-300x300.png" />
+
+	<!-- Cookie Consent Config -->
+	<script src="tracking/cookies/config.js"></script>
+	<script src="tracking/cookies/consent-manager.js"></script>
+	<!-- End Cookie Consent Config -->
+
+	<!-- Google Analytics -->
+	<script src="tracking/google-analytics/google-analytics.js"></script>
+	<!-- End Google Analytics -->
+
+	<!-- Meta Pixel Code -->
+	<script src="tracking/pixels/facebook-pixel.js"></script>
+	<noscript><img height="1" width="1" style="display:none"
+	src="https://www.facebook.com/tr?id=765770172992113&ev=PageView&noscript=1"
+	/></noscript>
+	<!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -235,6 +251,37 @@
 </div>
 		</footer>
 </div>
+
+	<!-- Cookie Consent Component -->
+	<div id="cookie-consent-placeholder"></div>
+	<script>
+		// Simple cookie consent component loader
+		(function() {
+			const placeholder = document.getElementById('cookie-consent-placeholder');
+			if (placeholder) {
+				fetch('components/cookie-consent/cookie-consent.html')
+					.then(response => response.text())
+					.then(html => {
+						placeholder.innerHTML = html;
+						// Load CSS
+						const link = document.createElement('link');
+						link.rel = 'stylesheet';
+						link.href = 'components/cookie-consent/cookie-consent.css';
+						document.head.appendChild(link);
+						// Load JS
+						const script = document.createElement('script');
+						script.src = 'components/cookie-consent/cookie-consent.js';
+						document.body.appendChild(script);
+					})
+					.catch(error => console.error('Error loading cookie consent component:', error));
+			}
+		})();
+	</script>
+
+	<!-- Anti-Bot Protection -->
+	<script src="security/anti-bot/config.js"></script>
+	<script src="security/anti-bot/honeypot.js"></script>
+	<script src="security/anti-bot/timestamp.js"></script>
 
 	<!-- JavaScript -->
 	<script src="assets/js/main.js"></script>

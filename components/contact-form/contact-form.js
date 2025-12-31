@@ -26,6 +26,11 @@
         return;
       }
 
+      // Initialize form timing for anti-bot protection
+      if (window.initializeFormTiming) {
+        window.initializeFormTiming(this.form, 'contact-us');
+      }
+
       this.attachEvents();
     },
 
@@ -50,6 +55,17 @@
       e.preventDefault();
 
       if (this.isSubmitting) {
+        return;
+      }
+
+      // Anti-bot validation
+      const formData = new FormData(this.form);
+      if (window.validateHoneypot && !window.validateHoneypot(formData, 'contact-us')) {
+        this.showMessage(this.errorMessage);
+        return;
+      }
+      if (window.validateFormTiming && !window.validateFormTiming(this.form, 'contact-us')) {
+        this.showMessage(this.errorMessage);
         return;
       }
 
@@ -187,6 +203,11 @@
 
         // Reset form
         this.form.reset();
+
+        // Reset form timing for anti-bot protection
+        if (window.resetFormTiming) {
+          window.resetFormTiming(this.form);
+        }
 
         // Clear all field errors
         const fields = this.form.querySelectorAll('.form-input, .form-textarea');

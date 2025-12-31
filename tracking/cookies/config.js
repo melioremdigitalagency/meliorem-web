@@ -11,7 +11,7 @@
     /**
      * Storage key for consent preferences
      */
-    storageKey: 'opb_cookie_consent',
+    storageKey: 'meliorem_cookie_consent',
 
     /**
      * Cookie categories

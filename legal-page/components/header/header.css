@@ -1,0 +1,35 @@
+.opb-header {
+  background-color: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 1rem 0;
+}
+
+.opb-nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.opb-nav-logo {
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1A2645;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.opb-nav-logo:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 544px) {
+  .opb-nav-container {
+    padding: 0 1rem;
+  }
+  
+  .opb-nav-logo {
+    font-size: 1.1rem;
+  }
+}
+

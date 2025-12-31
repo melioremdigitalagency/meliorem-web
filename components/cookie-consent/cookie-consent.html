@@ -1,0 +1,98 @@
+<!-- Cookie Consent Banner -->
+<div class="opb-cookie-banner" id="opb-cookie-banner" role="dialog" aria-label="Cookie consent" aria-hidden="true">
+  <div class="opb-cookie-banner-content">
+    <div class="opb-cookie-banner-text">
+      <p class="opb-cookie-banner-title">We use cookies</p>
+      <p class="opb-cookie-banner-description">
+        We use cookies to enhance your browsing experience, analyze site traffic, and personalize content. By clicking "Accept All", you consent to our use of cookies. 
+        <a href="#" class="opb-cookie-banner-link" id="opb-cookie-privacy-link" data-base-href="legal-page/privacy-policy.html">Learn more</a>
+      </p>
+    </div>
+    <div class="opb-cookie-banner-actions">
+      <button type="button" class="opb-cookie-btn opb-cookie-btn-reject" id="opb-cookie-reject">
+        Reject Non-Essential
+      </button>
+      <button type="button" class="opb-cookie-btn opb-cookie-btn-customize" id="opb-cookie-customize">
+        Customize
+      </button>
+      <button type="button" class="opb-cookie-btn opb-cookie-btn-accept" id="opb-cookie-accept">
+        Accept All
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Cookie Settings Modal -->
+<div class="opb-cookie-modal" id="opb-cookie-modal" role="dialog" aria-label="Cookie settings" aria-hidden="true">
+  <div class="opb-cookie-modal-overlay" id="opb-cookie-modal-overlay"></div>
+  <div class="opb-cookie-modal-content">
+    <div class="opb-cookie-modal-header">
+      <h2 class="opb-cookie-modal-title">Cookie Preferences</h2>
+      <button type="button" class="opb-cookie-modal-close" id="opb-cookie-modal-close" aria-label="Close cookie settings">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="opb-cookie-modal-body">
+      <p class="opb-cookie-modal-intro">
+        We use cookies to enhance your browsing experience, analyze site traffic, and personalize content. You can choose which cookies to accept below.
+      </p>
+      
+      <!-- Essential Cookies -->
+      <div class="opb-cookie-category">
+        <div class="opb-cookie-category-header">
+          <div class="opb-cookie-category-info">
+            <h3 class="opb-cookie-category-title">Essential Cookies</h3>
+            <p class="opb-cookie-category-description">
+              These cookies are necessary for the website to function and cannot be disabled. They are usually set in response to actions made by you such as setting privacy preferences, logging in, or filling in forms.
+            </p>
+          </div>
+          <label class="opb-cookie-toggle">
+            <input type="checkbox" checked disabled aria-label="Essential cookies (always enabled)">
+            <span class="opb-cookie-toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Analytics Cookies -->
+      <div class="opb-cookie-category">
+        <div class="opb-cookie-category-header">
+          <div class="opb-cookie-category-info">
+            <h3 class="opb-cookie-category-title">Analytics Cookies</h3>
+            <p class="opb-cookie-category-description">
+              These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously. This helps us improve our website.
+            </p>
+          </div>
+          <label class="opb-cookie-toggle">
+            <input type="checkbox" id="opb-cookie-analytics" aria-label="Enable analytics cookies">
+            <span class="opb-cookie-toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Marketing Cookies -->
+      <div class="opb-cookie-category">
+        <div class="opb-cookie-category-header">
+          <div class="opb-cookie-category-info">
+            <h3 class="opb-cookie-category-title">Marketing Cookies</h3>
+            <p class="opb-cookie-category-description">
+              These cookies are used to track visitors across websites to display relevant advertisements and measure campaign effectiveness.
+            </p>
+          </div>
+          <label class="opb-cookie-toggle">
+            <input type="checkbox" id="opb-cookie-marketing" aria-label="Enable marketing cookies">
+            <span class="opb-cookie-toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="opb-cookie-modal-footer">
+      <button type="button" class="opb-cookie-btn opb-cookie-btn-secondary" id="opb-cookie-modal-cancel">
+        Cancel
+      </button>
+      <button type="button" class="opb-cookie-btn opb-cookie-btn-primary" id="opb-cookie-modal-save">
+        Save Preferences
+      </button>
+    </div>
+  </div>
+</div>
+

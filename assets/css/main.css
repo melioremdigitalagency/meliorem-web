@@ -321,6 +321,7 @@ p {
   display: flex;
   align-items: flex-start;
   gap: 2em;
+  flex: 1;
 }
 
 .service-card-content {
@@ -339,7 +340,6 @@ p {
 }
 
 .service-card-actions {
-  margin-top: var(--meliorem-spacing-20);
   display: flex;
   align-items: flex-end;
 }

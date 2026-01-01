@@ -1,12 +1,13 @@
 /**
  * Make.com Contact Request Webhook Client
  * 
- * Handles Contact-Us and Waitlist form submissions to Make.com webhook.
- * Both forms use the same webhook endpoint.
+ * Handles B2B, Contact-Us, and Waitlist form submissions to Make.com webhook.
+ * All forms use the same webhook endpoint (Webhook A).
  * 
  * Usage:
- *   const result = await window.ContactRequestWebhook.submit('waitlist', payload);
+ *   const result = await window.ContactRequestWebhook.submit('b2b', payload);
  *   const result = await window.ContactRequestWebhook.submit('contact-us', payload);
+ *   const result = await window.ContactRequestWebhook.submit('waitlist', payload);
  */
 
 (function() {
@@ -21,12 +22,12 @@
     /**
      * Valid form types for this webhook
      */
-    validFormTypes: ['contact-us', 'waitlist'],
+    validFormTypes: ['b2b', 'contact-us', 'waitlist'],
 
     /**
-     * Submit Contact-Us or Waitlist form data to Make.com webhook
+     * Submit B2B, Contact-Us, or Waitlist form data to Make.com webhook
      * 
-     * @param {string} formType - Form type: 'contact-us' or 'waitlist'
+     * @param {string} formType - Form type: 'b2b', 'contact-us', or 'waitlist'
      * @param {Object} payload - Form submission payload (includes form data and metadata)
      * @returns {Promise<Object>} Response from webhook
      * @throws {Error} If submission fails

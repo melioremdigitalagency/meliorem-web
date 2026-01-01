@@ -1,6 +1,6 @@
 /**
- * Contact Form Component
- * Handles form validation and simulated submission
+ * Contact Form Component (B2B Form)
+ * Handles form validation and webhook submission
  */
 
 (function() {
@@ -28,7 +28,7 @@
 
       // Initialize form timing for anti-bot protection
       if (window.initializeFormTiming) {
-        window.initializeFormTiming(this.form, 'contact-us');
+        window.initializeFormTiming(this.form, 'b2b');
       }
 
       this.attachEvents();
@@ -41,10 +41,11 @@
       this.form.addEventListener('submit', this.handleSubmit.bind(this));
       
       // Real-time validation on blur
-      const inputs = this.form.querySelectorAll('.form-input, .form-textarea');
+      const inputs = this.form.querySelectorAll('.form-input, .form-textarea, .form-checkbox');
       inputs.forEach(input => {
         input.addEventListener('blur', () => this.validateField(input));
         input.addEventListener('input', () => this.clearFieldError(input));
+        input.addEventListener('change', () => this.clearFieldError(input));
       });
     },
 
@@ -60,11 +61,13 @@
 
       // Anti-bot validation
       const formData = new FormData(this.form);
-      if (window.validateHoneypot && !window.validateHoneypot(formData, 'contact-us')) {
+      if (window.validateHoneypot && !window.validateHoneypot(formData, 'b2b')) {
+        console.warn('[Contact Form] Bot detected via honeypot validation');
         this.showMessage(this.errorMessage);
         return;
       }
-      if (window.validateFormTiming && !window.validateFormTiming(this.form, 'contact-us')) {
+      if (window.validateFormTiming && !window.validateFormTiming(this.form, 'b2b')) {
+        console.warn('[Contact Form] Bot detected via timing validation');
         this.showMessage(this.errorMessage);
         return;
       }
@@ -94,13 +97,20 @@
         }
       });
 
-      // Validate email if provided
+      // Validate email format
       const emailField = this.form.querySelector('#email');
       if (emailField && emailField.value.trim() !== '') {
         if (!this.validateEmail(emailField.value)) {
           this.showFieldError(emailField, 'Please enter a valid email address');
           isValid = false;
         }
+      }
+
+      // Validate POPI consent (must be checked)
+      const popiConsent = this.form.querySelector('#popi-consent');
+      if (popiConsent && !popiConsent.checked) {
+        this.showFieldError(popiConsent, 'You must consent to sharing your personal information');
+        isValid = false;
       }
 
       return isValid;
@@ -110,12 +120,23 @@
      * Validate a single field
      */
     validateField: function(field) {
-      const value = field.value.trim();
       const fieldId = field.id;
       const errorElement = document.getElementById(fieldId + '-error');
 
       // Clear previous error
       this.clearFieldError(field);
+
+      // Handle checkboxes
+      if (field.type === 'checkbox') {
+        if (field.hasAttribute('required') && !field.checked) {
+          this.showFieldError(field, 'This field is required');
+          return false;
+        }
+        return true;
+      }
+
+      // Handle text fields
+      const value = field.value.trim();
 
       // Check required fields
       if (field.hasAttribute('required') && value === '') {
@@ -186,9 +207,9 @@
     },
 
     /**
-     * Simulate form submission
+     * Submit form to webhook
      */
-    submitForm: function() {
+    submitForm: async function() {
       this.isSubmitting = true;
       this.submitButton.disabled = true;
       this.submitButton.querySelector('.submit-text').textContent = 'Submitting...';
@@ -196,35 +217,100 @@
       // Hide any previous messages
       this.showMessage(null);
 
-      // Simulate API call delay
-      setTimeout(() => {
-        // Show success message
-        this.showMessage(this.successMessage);
+      try {
+        // Build payload (exclude honeypot fields)
+        const formData = new FormData(this.form);
+        const payload = {
+          formType: 'b2b',
+          submittedAt: new Date().toISOString(),
+          fields: {
+            firstName: formData.get('first-name') || '',
+            lastName: formData.get('last-name') || '',
+            companyName: formData.get('company-name') || '',
+            email: formData.get('email') || '',
+            phone: formData.get('phone') || null,
+            message: formData.get('message') || '',
+            popiConsent: formData.get('popi-consent') === 'on' || formData.has('popi-consent')
+          },
+          metadata: {
+            // Anti-bot metadata can be added here if needed
+            timestamp: Date.now()
+          }
+        };
 
-        // Reset form
-        this.form.reset();
+        // Log form results to console for inspection
+        console.log('[Contact Form] Form submission payload:', JSON.stringify(payload, null, 2));
+        
+        // Log all form data including honeypot fields
+        const allFormData = Object.fromEntries(formData.entries());
+        console.log('[Contact Form] Raw form data (all fields):', allFormData);
+        
+        // Log honeypot fields separately for inspection
+        const honeypotFields = {
+          'sa-id-number': formData.get('sa-id-number') || '',
+          'tnc-consent': formData.has('tnc-consent') ? formData.get('tnc-consent') : '',
+          'company-size': formData.get('company-size') || '',
+          'confirm-email': formData.get('confirm-email') || '',
+          'zip-code': formData.get('zip-code') || '',
+          'create-account': formData.has('create-account') ? formData.get('create-account') : '',
+          'username': formData.get('username') || ''
+        };
+        console.log('[Contact Form] Honeypot fields:', honeypotFields);
 
-        // Reset form timing for anti-bot protection
-        if (window.resetFormTiming) {
-          window.resetFormTiming(this.form);
+        // Check if webhook is configured
+        if (!window.ContactRequestWebhook || !window.ContactRequestWebhook.isConfigured()) {
+          console.warn('[Contact Form] Webhook not configured, simulating submission');
+          // Simulate success for development
+          setTimeout(() => {
+            this.showMessage(this.successMessage);
+            this.resetForm();
+            this.isSubmitting = false;
+          }, 1000);
+          return;
         }
 
-        // Clear all field errors
-        const fields = this.form.querySelectorAll('.form-input, .form-textarea');
-        fields.forEach(field => {
-          this.clearFieldError(field);
-        });
+        // Submit to webhook
+        const result = await window.ContactRequestWebhook.submit('b2b', payload);
+        
+        // Log webhook response
+        console.log('[Contact Form] Webhook response:', result);
 
+        // Show success message
+        this.showMessage(this.successMessage);
+        this.resetForm();
+
+      } catch (error) {
+        console.error('[Contact Form] Submission error:', error);
+        this.showMessage(this.errorMessage);
+      } finally {
         // Reset button
         this.submitButton.disabled = false;
         this.submitButton.querySelector('.submit-text').textContent = 'Submit';
         this.isSubmitting = false;
+      }
+    },
 
-        // Scroll to success message
-        if (this.successMessage) {
-          this.successMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-      }, 1000);
+    /**
+     * Reset form after successful submission
+     */
+    resetForm: function() {
+      // Reset form
+      this.form.reset();
+
+      // Reset form timing for anti-bot protection
+      if (window.resetFormTiming) {
+        window.resetFormTiming(this.form);
+      }
+      // Re-initialize timing for next submission
+      if (window.initializeFormTiming) {
+        window.initializeFormTiming(this.form, 'b2b');
+      }
+
+      // Clear all field errors
+      const fields = this.form.querySelectorAll('.form-input, .form-textarea, .form-checkbox');
+      fields.forEach(field => {
+        this.clearFieldError(field);
+      });
     }
   };
 

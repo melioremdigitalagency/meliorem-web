@@ -66,6 +66,22 @@
   border-color: #cf2e2e;
 }
 
+.form-checkbox {
+  margin-right: 0.5rem;
+  width: auto;
+  cursor: pointer;
+}
+
+.form-checkbox.error {
+  outline: 2px solid #cf2e2e;
+  outline-offset: 2px;
+}
+
+.form-label .form-checkbox + span {
+  cursor: pointer;
+  user-select: none;
+}
+
 .form-error {
   display: none;
   font-size: 0.875rem;

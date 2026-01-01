@@ -200,12 +200,13 @@
 								</div>
 
 								<div class="form-field">
-									<label for="email" class="form-label">Email</label>
+									<label for="email" class="form-label required">Email</label>
 									<input 
 										type="email" 
 										id="email" 
 										name="email" 
 										placeholder="example@mail.com" 
+										required
 										class="form-input" 
 										autocomplete="email"
 									/>
@@ -213,17 +214,122 @@
 								</div>
 
 								<div class="form-field">
-									<label for="service-interest" class="form-label required">Which service are you interested in?</label>
+									<label for="phone" class="form-label">Phone</label>
+									<input 
+										type="tel" 
+										id="phone" 
+										name="phone" 
+										placeholder="+27 12 345 6789" 
+										class="form-input" 
+										autocomplete="tel"
+									/>
+									<span class="form-error" id="phone-error"></span>
+								</div>
+
+								<div class="form-field">
+									<label for="message" class="form-label required">What service are you interested in?</label>
 									<textarea 
-										id="service-interest" 
-										name="service-interest" 
+										id="message" 
+										name="message" 
 										rows="4" 
-										placeholder="Lead generation" 
+										placeholder="Tell us about your project..." 
 										required 
 										class="form-textarea" 
 										autocomplete="off"
 									></textarea>
-									<span class="form-error" id="service-interest-error"></span>
+									<span class="form-error" id="message-error"></span>
+								</div>
+
+								<div class="form-field">
+									<label for="popi-consent" class="form-label required">
+										<input 
+											type="checkbox" 
+											id="popi-consent" 
+											name="popi-consent" 
+											required
+											class="form-checkbox" 
+										/>
+										<span>I consent to sharing my personal information</span>
+									</label>
+									<span class="form-error" id="popi-consent-error"></span>
+								</div>
+
+								<!-- Honeypot Fields (Hidden) -->
+								<div class="opb-honeypot-field" aria-hidden="true">
+									<label for="sa-id-number">SA ID Number</label>
+									<input 
+										type="text" 
+										id="sa-id-number" 
+										name="sa-id-number"
+										tabindex="-1"
+										autocomplete="off"
+									/>
+								</div>
+
+								<div class="opb-honeypot-field" aria-hidden="true">
+									<label for="tnc-consent">Terms & Conditions</label>
+									<input 
+										type="checkbox" 
+										id="tnc-consent" 
+										name="tnc-consent"
+										tabindex="-1"
+										autocomplete="off"
+									/>
+								</div>
+
+								<div class="opb-honeypot-field" aria-hidden="true">
+									<label for="company-size">Company Size</label>
+									<input 
+										type="text" 
+										id="company-size" 
+										name="company-size"
+										tabindex="-1"
+										autocomplete="off"
+									/>
+								</div>
+
+								<div class="opb-honeypot-field" aria-hidden="true">
+									<label for="confirm-email">Confirm Email</label>
+									<input 
+										type="email" 
+										id="confirm-email" 
+										name="confirm-email"
+										tabindex="-1"
+										autocomplete="off"
+									/>
+								</div>
+
+								<div class="opb-honeypot-field" aria-hidden="true">
+									<label for="zip-code">Zip Code</label>
+									<input 
+										type="text" 
+										id="zip-code" 
+										name="zip-code"
+										tabindex="-1"
+										autocomplete="off"
+									/>
+								</div>
+
+								<div class="opb-honeypot-field" aria-hidden="true">
+									<label for="create-account">Create Account</label>
+									<input 
+										type="checkbox" 
+										id="create-account" 
+										name="create-account"
+										tabindex="-1"
+										autocomplete="off"
+									/>
+								</div>
+
+								<div class="opb-honeypot-field" aria-hidden="true">
+									<label for="username">Username</label>
+									<input 
+										type="text" 
+										id="username" 
+										name="username"
+										tabindex="-1"
+										autocomplete="off"
+									/>
 								</div>
 
 								<div class="form-actions">
@@ -285,6 +391,10 @@
 	<script src="security/anti-bot/config.js"></script>
 	<script src="security/anti-bot/honeypot.js"></script>
 	<script src="security/anti-bot/timestamp.js"></script>
+
+	<!-- Webhook Integration -->
+	<script src="integrations/config.js"></script>
+	<script src="integrations/make-com/contact-request-webhook.js"></script>
 
 	<!-- JavaScript -->
 	<script src="assets/js/main.js"></script>

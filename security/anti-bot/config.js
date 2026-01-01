@@ -12,6 +12,21 @@
      * Maps form type identifiers to their honeypot field specifications
      */
     forms: {
+      'b2b': {
+        honeypotFields: [
+          { name: 'sa-id-number', label: 'SA ID Number', type: 'text' },
+          { name: 'tnc-consent', label: 'Terms & Conditions', type: 'checkbox' },
+          { name: 'company-size', label: 'Company Size', type: 'text' },
+          { name: 'confirm-email', label: 'Confirm Email', type: 'email' },
+          { name: 'zip-code', label: 'Zip Code', type: 'text' },
+          { name: 'create-account', label: 'Create Account', type: 'checkbox' },
+          { name: 'username', label: 'Username', type: 'text' }
+        ],
+        formSelector: '.contact-form',
+        timing: {
+          minDuration: 3
+        }
+      },
       'waitlist': {
         honeypotField: 'reason_for_contact',
         honeypotLabel: 'Reason for contact',
@@ -43,7 +58,7 @@
 
     /**
      * Get configuration for a form type
-     * @param {string} formType - Form identifier ('waitlist', 'contact-us', 'dc-lead')
+     * @param {string} formType - Form identifier ('b2b', 'waitlist', 'contact-us', 'dc-lead')
      * @returns {Object|null} Form configuration or null if not found
      */
     getFormConfig: function(formType) {

@@ -25,9 +25,9 @@ Load the configuration and validation modules in your HTML:
 
 **Important:** Load `config.js` before `honeypot.js`.
 
-### 2. Add Honeypot Field to HTML
+### 2. Add Honeypot Field(s) to HTML
 
-Add a honeypot field to your form HTML:
+Add honeypot field(s) to your form HTML. For single honeypot:
 
 ```html
 <div class="opb-honeypot-field" aria-hidden="true">
@@ -36,6 +36,32 @@ Add a honeypot field to your form HTML:
     type="text" 
     id="reason_for_contact" 
     name="reason_for_contact"
+    tabindex="-1"
+    autocomplete="off"
+  />
+</div>
+```
+
+For multiple honeypot fields (e.g., B2B form):
+
+```html
+<div class="opb-honeypot-field" aria-hidden="true">
+  <label for="sa-id-number">SA ID Number</label>
+  <input 
+    type="text" 
+    id="sa-id-number" 
+    name="sa-id-number"
+    tabindex="-1"
+    autocomplete="off"
+  />
+</div>
+
+<div class="opb-honeypot-field" aria-hidden="true">
+  <label for="tnc-consent">Terms & Conditions</label>
+  <input 
+    type="checkbox" 
+    id="tnc-consent" 
+    name="tnc-consent"
     tabindex="-1"
     autocomplete="off"
   />
@@ -59,11 +85,14 @@ if (!window.validateHoneypot(formData, 'waitlist')) {
 ## Form Types
 
 Supported form types (defined in `config.js`):
+- `b2b` - B2B contact form (supports multiple honeypot fields)
 - `waitlist` - Waitlist form component
 - `contact-us` - Contact form component
 - `dc-lead` - DC Lead form in calculator
 
 ## Adding a New Form
+
+### Single Honeypot Field (Legacy Format)
 
 1. Add configuration to `config.js`:
 ```javascript
@@ -71,12 +100,37 @@ Supported form types (defined in `config.js`):
   honeypotField: 'field_name',
   honeypotLabel: 'Field Label',
   honeypotType: 'text',
-  formSelector: '.form-selector'
+  formSelector: '.form-selector',
+  timing: {
+    minDuration: 3
+  }
 }
 ```
 
 2. Add honeypot field to form HTML
 3. Call `validateHoneypot()` in form submission handler
+
+### Multiple Honeypot Fields (Recommended)
+
+1. Add configuration to `config.js`:
+```javascript
+'new-form': {
+  honeypotFields: [
+    { name: 'field1', label: 'Field 1', type: 'text' },
+    { name: 'field2', label: 'Field 2', type: 'checkbox' },
+    { name: 'field3', label: 'Field 3', type: 'email' }
+  ],
+  formSelector: '.form-selector',
+  timing: {
+    minDuration: 3
+  }
+}
+```
+
+2. Add all honeypot fields to form HTML (each wrapped in `.opb-honeypot-field`)
+3. Call `validateHoneypot()` in form submission handler
+
+The validation function will check all honeypot fields and return `false` if any are filled/checked.
 
 ## Security Notes
 

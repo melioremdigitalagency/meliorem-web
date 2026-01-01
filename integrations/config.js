@@ -18,9 +18,9 @@
     makeCom: {
       enabled: true,
       webhooks: {
-        'dc-lead': '', // TODO: Add Make.com webhook URL for DC Lead form
-        'contact-us': '', // TODO: Add Make.com webhook URL for Contact-Us form
-        'waitlist': '' // TODO: Add Make.com webhook URL for Waitlist form (same as contact-us)
+        'b2b': '', // Webhook A - same as contact-us
+        'contact-us': '', // Webhook A - same as b2b
+        'dc-lead': '' // Webhook B
       },
       timeout: 10000, // 10 seconds
       retryAttempts: 1
@@ -35,7 +35,12 @@
       anonKey: '', // TODO: Add Supabase anonymous key
       // Note: Service role key should NEVER be in client-side code
       // Only use anon key with Row Level Security (RLS) enabled
-    }
+    },
+
+    /**
+     * Debug mode - enables console logging
+     */
+    debug: true
   };
 
 })();

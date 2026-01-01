@@ -19,7 +19,7 @@
    * Initialize timing for a form
    * Call this when form becomes available to the user
    * @param {HTMLElement} formElement - Form DOM element
-   * @param {string} formType - Form type identifier ('waitlist', 'contact-us', 'dc-lead')
+   * @param {string} formType - Form type identifier ('b2b', 'waitlist')
    */
   function initializeFormTiming(formElement, formType) {
     if (!formElement || !formType) {

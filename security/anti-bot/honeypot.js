@@ -14,7 +14,7 @@
   /**
    * Validate honeypot fields for a form
    * @param {FormData|Object} formData - Form data (FormData object or plain object)
-   * @param {string} formType - Form type identifier ('b2b', 'waitlist', 'contact-us', 'dc-lead')
+   * @param {string} formType - Form type identifier ('b2b', 'waitlist')
    * @returns {boolean} true if all honeypots are empty (valid), false if any filled (bot detected)
    */
   function validateHoneypot(formData, formType) {

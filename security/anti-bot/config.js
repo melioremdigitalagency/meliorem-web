@@ -35,30 +35,12 @@
         timing: {
           minDuration: 3  // seconds (uniform for all forms)
         }
-      },
-      'contact-us': {
-        honeypotField: 'website_url',
-        honeypotLabel: 'Website',
-        honeypotType: 'url',
-        formSelector: '.opb-contact-us-form',
-        timing: {
-          minDuration: 3
-        }
-      },
-      'dc-lead': {
-        honeypotField: 'preferred_contact',
-        honeypotLabel: 'Preferred Contact Method',
-        honeypotType: 'text',
-        formSelector: '#dcLeadForm',
-        timing: {
-          minDuration: 3
-        }
       }
     },
 
     /**
      * Get configuration for a form type
-     * @param {string} formType - Form identifier ('b2b', 'waitlist', 'contact-us', 'dc-lead')
+     * @param {string} formType - Form identifier ('b2b', 'waitlist')
      * @returns {Object|null} Form configuration or null if not found
      */
     getFormConfig: function(formType) {

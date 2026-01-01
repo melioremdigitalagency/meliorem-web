@@ -87,8 +87,6 @@ if (!window.validateHoneypot(formData, 'waitlist')) {
 Supported form types (defined in `config.js`):
 - `b2b` - B2B contact form (supports multiple honeypot fields)
 - `waitlist` - Waitlist form component
-- `contact-us` - Contact form component
-- `dc-lead` - DC Lead form in calculator
 
 ## Adding a New Form
 

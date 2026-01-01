@@ -222,6 +222,7 @@
         const formData = new FormData(this.form);
         const payload = {
           formType: 'b2b',
+          source: 'meliorem-web',
           submittedAt: new Date().toISOString(),
           fields: {
             firstName: formData.get('first-name') || '',

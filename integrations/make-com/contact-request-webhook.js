@@ -1,12 +1,11 @@
 /**
  * Make.com Contact Request Webhook Client
  * 
- * Handles B2B, Contact-Us, and Waitlist form submissions to Make.com webhook.
+ * Handles B2B and Waitlist form submissions to Make.com webhook.
  * All forms use the same webhook endpoint (Webhook A).
  * 
  * Usage:
  *   const result = await window.ContactRequestWebhook.submit('b2b', payload);
- *   const result = await window.ContactRequestWebhook.submit('contact-us', payload);
  *   const result = await window.ContactRequestWebhook.submit('waitlist', payload);
  */
 
@@ -17,17 +16,17 @@
     /**
      * Webhook configuration key
      */
-    webhookKey: 'contact-us',
+    webhookKey: 'b2b',
 
     /**
      * Valid form types for this webhook
      */
-    validFormTypes: ['b2b', 'contact-us', 'waitlist'],
+    validFormTypes: ['b2b', 'waitlist'],
 
     /**
-     * Submit B2B, Contact-Us, or Waitlist form data to Make.com webhook
+     * Submit B2B or Waitlist form data to Make.com webhook
      * 
-     * @param {string} formType - Form type: 'b2b', 'contact-us', or 'waitlist'
+     * @param {string} formType - Form type: 'b2b' or 'waitlist'
      * @param {Object} payload - Form submission payload (includes form data and metadata)
      * @returns {Promise<Object>} Response from webhook
      * @throws {Error} If submission fails
@@ -47,11 +46,11 @@
         throw new Error('Make.com integration is not enabled');
       }
 
-      // Get webhook URL (both forms use the same webhook)
+      // Get webhook URL
       const webhookUrl = apiConfig.webhooks[this.webhookKey];
 
       if (!webhookUrl) {
-        throw new Error(`No webhook URL configured for Contact Request forms. Please configure 'contact-us' in integrations/config.js`);
+        throw new Error(`No webhook URL configured for Contact Request forms. Please configure 'b2b' in integrations/config.js`);
       }
 
       if (!webhookUrl.trim()) {

@@ -18,9 +18,7 @@
     makeCom: {
       enabled: true,
       webhooks: {
-        'b2b': '', // Webhook A - same as contact-us
-        'contact-us': '', // Webhook A - same as b2b
-        'dc-lead': '' // Webhook B
+        'b2b': 'https://hook.eu1.make.com/3s5kgcidwbjefkmxj81xhbqtosueyxb7'
       },
       timeout: 10000, // 10 seconds
       retryAttempts: 1

@@ -37,8 +37,9 @@
 
     /**
      * Debug mode - enables console logging
+     * Automatically enabled on localhost, disabled in production
      */
-    debug: true
+    debug: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
   };
 
 })();

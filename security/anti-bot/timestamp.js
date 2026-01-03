@@ -23,7 +23,9 @@
    */
   function initializeFormTiming(formElement, formType) {
     if (!formElement || !formType) {
-      console.warn('[Timestamp] Invalid parameters for initializeFormTiming');
+      if (window.Environment?.shouldLog()) {
+        console.warn('[Timestamp] Invalid parameters for initializeFormTiming');
+      }
       return;
     }
 
@@ -39,21 +41,27 @@
    */
   function validateFormTiming(formElement, formType) {
     if (!formElement || !formType) {
-      console.warn('[Timestamp] Invalid parameters for validateFormTiming');
+      if (window.Environment?.shouldLog()) {
+        console.warn('[Timestamp] Invalid parameters for validateFormTiming');
+      }
       return true; // Fail open
     }
 
     // Get form configuration
     const config = window.AntiBotConfig?.getFormConfig(formType);
     if (!config || !config.timing) {
-      console.warn('[Timestamp] No timing configuration found for form type:', formType);
+      if (window.Environment?.shouldLog()) {
+        console.warn('[Timestamp] No timing configuration found for form type:', formType);
+      }
       return true; // Fail open - don't block if config missing
     }
 
     // Get start time
     const startTime = formStartTimes.get(formElement);
     if (!startTime) {
-      console.warn('[Timestamp] Start time not initialized for form');
+      if (window.Environment?.shouldLog()) {
+        console.warn('[Timestamp] Start time not initialized for form');
+      }
       return true; // Fail open - don't block if timing wasn't initialized
     }
 
@@ -63,7 +71,9 @@
 
     // Check if submission is too fast
     if (duration < minDuration) {
-      console.warn('[Bot Detection] Submission too fast:', duration.toFixed(2) + 's (minimum: ' + minDuration + 's)');
+      if (window.Environment?.shouldLog()) {
+        console.warn('[Bot Detection] Submission too fast:', duration.toFixed(2) + 's (minimum: ' + minDuration + 's)');
+      }
       return false; // Bot detected
     }
 
@@ -77,7 +87,9 @@
    */
   function resetFormTiming(formElement) {
     if (!formElement) {
-      console.warn('[Timestamp] Invalid parameter for resetFormTiming');
+      if (window.Environment?.shouldLog()) {
+        console.warn('[Timestamp] Invalid parameter for resetFormTiming');
+      }
       return;
     }
 

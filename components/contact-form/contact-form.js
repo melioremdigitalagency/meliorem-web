@@ -68,12 +68,16 @@
       
       const formData = new FormData(this.form);
       if (window.validateHoneypot && !window.validateHoneypot(formData, 'b2b')) {
-        console.warn('[Contact Form] Bot detected via honeypot validation');
+        if (window.Environment?.shouldLog()) {
+          console.warn('[Contact Form] Bot detected via honeypot validation');
+        }
         this.showMessage(this.errorMessage);
         return;
       }
       if (window.validateFormTiming && !window.validateFormTiming(this.form, 'b2b')) {
-        console.warn('[Contact Form] Bot detected via timing validation');
+        if (window.Environment?.shouldLog()) {
+          console.warn('[Contact Form] Bot detected via timing validation');
+        }
         this.showMessage(this.errorMessage);
         return;
       }
@@ -278,28 +282,32 @@
           }
         };
 
-        // Log form results to console for inspection
-        console.log('[Contact Form] Form submission payload:', JSON.stringify(payload, null, 2));
-        
-        // Log all form data including honeypot fields
-        const allFormData = Object.fromEntries(formData.entries());
-        console.log('[Contact Form] Raw form data (all fields):', allFormData);
-        
-        // Log honeypot fields separately for inspection
-        const honeypotFields = {
-          'sa-id-number': formData.get('sa-id-number') || '',
-          'tnc-consent': formData.has('tnc-consent') ? formData.get('tnc-consent') : '',
-          'company-size': formData.get('company-size') || '',
-          'confirm-email': formData.get('confirm-email') || '',
-          'zip-code': formData.get('zip-code') || '',
-          'create-account': formData.has('create-account') ? formData.get('create-account') : '',
-          'username': formData.get('username') || ''
-        };
-        console.log('[Contact Form] Honeypot fields:', honeypotFields);
+        // Log form results to console for inspection (dev only)
+        if (window.Environment?.shouldLog()) {
+          console.debug('[Contact Form] Form submission payload:', JSON.stringify(payload, null, 2));
+          
+          // Log all form data including honeypot fields
+          const allFormData = Object.fromEntries(formData.entries());
+          console.debug('[Contact Form] Raw form data (all fields):', allFormData);
+          
+          // Log honeypot fields separately for inspection
+          const honeypotFields = {
+            'sa-id-number': formData.get('sa-id-number') || '',
+            'tnc-consent': formData.has('tnc-consent') ? formData.get('tnc-consent') : '',
+            'company-size': formData.get('company-size') || '',
+            'confirm-email': formData.get('confirm-email') || '',
+            'zip-code': formData.get('zip-code') || '',
+            'create-account': formData.has('create-account') ? formData.get('create-account') : '',
+            'username': formData.get('username') || ''
+          };
+          console.debug('[Contact Form] Honeypot fields:', honeypotFields);
+        }
 
         // Check if webhook is configured
         if (!window.ContactRequestWebhook || !window.ContactRequestWebhook.isConfigured()) {
-          console.warn('[Contact Form] Webhook not configured, simulating submission');
+          if (window.Environment?.shouldLog()) {
+            console.warn('[Contact Form] Webhook not configured, simulating submission');
+          }
           // Simulate success for development
           setTimeout(() => {
             this.showMessage(this.successMessage);
@@ -312,8 +320,10 @@
         // Submit to webhook
         const result = await window.ContactRequestWebhook.submit('b2b', payload);
         
-        // Log webhook response
-        console.log('[Contact Form] Webhook response:', result);
+        // Log webhook response (dev only)
+        if (window.Environment?.shouldLog()) {
+          console.debug('[Contact Form] Webhook response:', result);
+        }
 
         // Show success message
         this.showMessage(this.successMessage);

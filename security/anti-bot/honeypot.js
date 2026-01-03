@@ -21,7 +21,9 @@
     // Get form configuration
     const config = window.AntiBotConfig?.getFormConfig(formType);
     if (!config) {
-      console.warn('[Honeypot] No configuration found for form type:', formType);
+      if (window.Environment?.shouldLog()) {
+        console.warn('[Honeypot] No configuration found for form type:', formType);
+      }
       return true; // Fail open - don't block if config missing
     }
 
@@ -37,7 +39,9 @@
     }
 
     if (!honeypotFields.length) {
-      console.warn('[Honeypot] No honeypot fields configured for form type:', formType);
+      if (window.Environment?.shouldLog()) {
+        console.warn('[Honeypot] No honeypot fields configured for form type:', formType);
+      }
       return true; // Fail open
     }
 
@@ -57,7 +61,9 @@
       } else if (typeof formData === 'object' && formData !== null) {
         fieldValue = formData[field.name];
       } else {
-        console.warn('[Honeypot] Invalid formData type');
+        if (window.Environment?.shouldLog()) {
+          console.warn('[Honeypot] Invalid formData type');
+        }
         return true; // Fail open
       }
 
@@ -65,13 +71,17 @@
       if (field.type === 'checkbox') {
         // Checkbox should be unchecked (not present or false)
         if (fieldValue !== null && fieldValue !== false && fieldValue !== '') {
-          console.warn('[Bot Detection] Honeypot checkbox checked:', field.name);
+          if (window.Environment?.shouldLog()) {
+            console.warn('[Bot Detection] Honeypot checkbox checked:', field.name);
+          }
           return false; // Bot detected
         }
       } else {
         // Text/email/textarea should be empty or whitespace-only
         if (fieldValue && fieldValue.trim() !== '') {
-          console.warn('[Bot Detection] Honeypot field filled:', field.name);
+          if (window.Environment?.shouldLog()) {
+            console.warn('[Bot Detection] Honeypot field filled:', field.name);
+          }
           return false; // Bot detected
         }
       }

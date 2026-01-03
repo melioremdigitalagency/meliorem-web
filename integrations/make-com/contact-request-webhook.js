@@ -102,8 +102,8 @@
           }
 
           // Log success (only in development)
-          if (window.APIConfig?.debug) {
-            console.log(`[Make.com Contact Request] Successfully submitted ${formType} form`, result);
+          if (window.Environment?.shouldLog()) {
+            console.debug(`[Make.com Contact Request] Successfully submitted ${formType} form`, result);
           }
 
           return result;

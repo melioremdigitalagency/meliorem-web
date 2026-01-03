@@ -542,6 +542,50 @@ When adding new tracking scripts, verify:
 
 ---
 
+## 15. Production-Safe Console Logging (CRITICAL)
+
+### Environment Detection
+- **ALWAYS** check environment before logging to console
+- Use `window.Environment?.shouldLog()` to check if logging is enabled
+- Logging is only enabled on localhost or when `window.APIConfig.debug === true`
+- Environment detection utility: `assets/js/environment.js`
+
+### Log Level Guidelines
+- **console.debug()** - Detailed debugging info (form payloads, raw data, honeypot fields) - ONLY in dev
+- **console.info()** - General information (success messages, status updates) - ONLY in dev
+- **console.warn()** - Warnings (bot detection, configuration issues, non-critical errors) - ONLY in dev
+- **console.error()** - Errors (always logged, even in production for debugging)
+
+### Logging Pattern (REQUIRED)
+**NEVER** use direct console.log/warn/info/debug without environment check:
+
+```javascript
+// ❌ WRONG - Logs in production
+console.log('Debug info:', data);
+console.warn('Warning message');
+
+// ✅ CORRECT - Conditional logging for debug/info/warn
+if (window.Environment?.shouldLog()) {
+  console.debug('Debug info:', data);
+  console.warn('Warning message');
+}
+
+// ✅ CORRECT - Errors always logged (for production debugging)
+console.error('Error occurred:', error);
+```
+
+### Required Scripts
+- **MUST** include `assets/js/environment.js` before any code that uses logging
+- Environment detection must be available before form components initialize
+- Script order: environment.js → config.js → other scripts
+
+### When Adding New Code
+- **ALWAYS** wrap console.log/info/warn/debug in environment check
+- Use appropriate log level (debug for detailed info, warn for warnings)
+- Only console.error should be unconditional (for production error tracking)
+
+---
+
 ## Summary Checklist
 
 Before submitting any code changes, verify:
@@ -559,6 +603,7 @@ Before submitting any code changes, verify:
 - [ ] **If adding new pages**: New page has proper SEO meta tags (title, description, canonical)
 - [ ] **If adding/modifying forms**: Anti-bot measures integrated (honeypot field, timing validation, scripts included)
 - [ ] **If adding tracking scripts**: Consent-aware initialization, wrapper module pattern, Google Consent Mode (if Google service)
+- [ ] **If adding console logging**: Wrapped in `window.Environment?.shouldLog()` check (except console.error)
 
 ---
 

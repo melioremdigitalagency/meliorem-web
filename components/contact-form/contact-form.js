@@ -26,6 +26,9 @@
         return;
       }
 
+      // Clear honeypot fields to prevent browser autofill
+      this.clearHoneypotFields();
+
       // Initialize form timing for anti-bot protection
       if (window.initializeFormTiming) {
         window.initializeFormTiming(this.form, 'b2b');
@@ -60,6 +63,9 @@
       }
 
       // Anti-bot validation
+      // Clear honeypot fields as final safeguard before validation
+      this.clearHoneypotFields();
+      
       const formData = new FormData(this.form);
       if (window.validateHoneypot && !window.validateHoneypot(formData, 'b2b')) {
         console.warn('[Contact Form] Bot detected via honeypot validation');
@@ -204,6 +210,39 @@
         messageElement.classList.add('show');
         messageElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
+    },
+
+    /**
+     * Clear all honeypot fields to prevent browser autofill
+     */
+    clearHoneypotFields: function() {
+      if (!this.form) return;
+      
+      const honeypotFields = this.form.querySelectorAll('.opb-honeypot-field input');
+      honeypotFields.forEach(field => {
+        // Clear the value
+        if (field.type === 'checkbox') {
+          field.checked = false;
+        } else {
+          field.value = '';
+        }
+        
+        // Add event listeners to clear if autofilled
+        // Use named function to allow removal of existing listeners
+        const clearField = () => {
+          if (field.type === 'checkbox') {
+            field.checked = false;
+          } else {
+            field.value = '';
+          }
+        };
+        
+        // Remove existing listeners if any, then add new ones
+        field.removeEventListener('input', clearField);
+        field.removeEventListener('focus', clearField);
+        field.addEventListener('input', clearField);
+        field.addEventListener('focus', clearField);
+      });
     },
 
     /**

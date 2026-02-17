@@ -7,11 +7,10 @@
   'use strict';
 
   // Markdown file mapping based on page
-  // Note: Files are physically at pages/legal-page/assets/, but URLs use /legal-page/
   const markdownFiles = {
-    'terms-and-conditions': 'legal-page/assets/meliorem_terms_and_conditions.md',
-    'privacy-policy': 'legal-page/assets/meliorem_privacy_policy.md',
-    'data-community-policy': 'legal-page/assets/meliorem_data_community_optin.md'
+    'terms-and-conditions': 'legal/assets/meliorem_terms_and_conditions.md',
+    'privacy-policy': 'legal/assets/meliorem_privacy_policy.md',
+    'data-community-policy': 'legal/assets/meliorem_data_community_optin.md'
   };
 
   // Determine which markdown file to load based on page
@@ -24,9 +23,7 @@
     // Remove .html extension if present
     filename = filename.replace('.html', '');
     
-    // Handle both /legal/ and /legal-page/ URLs
-    // Note: Vercel rewrites /legal/ to /legal-page/ internally, but window.location.pathname shows the original URL
-    if (path.includes('legal/') || path.includes('legal-page/')) {
+    if (path.includes('legal/')) {
       return markdownFiles[filename] || null;
     }
     
@@ -37,10 +34,8 @@
   function getRelativePath(markdownPath) {
     const currentPath = window.location.pathname;
     
-    // If we're in legal/ or legal-page/ directory, extract just the assets/filename.md portion
-    // Since HTML files are now at legal-page/*/index.html (in subdirectories) and markdown files are at
-    // legal-page/assets/*.md, the relative path should be ../assets/filename.md
-    if (currentPath.includes('legal/') || currentPath.includes('legal-page/')) {
+    // If we're in legal/ directory, relative path from subdir to assets is ../assets/filename.md
+    if (currentPath.includes('legal/')) {
       const pathParts = markdownPath.split('/');
       const assetsIndex = pathParts.indexOf('assets');
       if (assetsIndex !== -1) {

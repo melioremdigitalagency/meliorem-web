@@ -1,10 +1,13 @@
 /**
  * IP-derived geo from Vercel edge headers (see Vercel request headers docs).
  * Response can include approximate location and client IP; consumers own privacy and retention.
+ * Currency fields come from bundled data/country-currency.json (not Vercel).
  *
  * Local `vercel dev` often omits or fakes headers; use production to validate.
  * VPNs, corporate egress, and mobile carriers can skew or hide values. Fields are null when unknown.
  */
+
+import currencyByCountry from '../data/country-currency.json';
 
 export const config = {
   runtime: 'edge',
@@ -87,6 +90,8 @@ function buildGeoPayload(request) {
       ip,
   );
 
+  const currencyEntry = country ? currencyByCountry[country] : undefined;
+
   return {
     continent,
     country,
@@ -97,6 +102,9 @@ function buildGeoPayload(request) {
     longitude,
     timezone,
     ip,
+    currencyCode: currencyEntry?.currencyCode ?? null,
+    currencyName: currencyEntry?.currencyName ?? null,
+    currencyCountryName: currencyEntry?.countryName ?? null,
     source: hasAny ? 'vercel_header' : 'unknown',
   };
 }

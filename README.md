@@ -9,7 +9,9 @@ Public **GET** endpoint that returns **IP-derived** location fields from **Verce
 **Canonical URL (production):** `https://meliorem.co.za/api/geo/`  
 This project uses `trailingSlash: true` on Vercel; prefer the trailing slash. Requests to `/api/geo` may redirect to `/api/geo/`.
 
-**Response (JSON):** Every call returns the same keys; values are strings or `null` when Vercel does not supply them.
+**Response (JSON):** Every call returns the same keys. String fields are `null` when the source does not supply a value.
+
+**Vercel (request IP / edge headers):**
 
 | Field | Source (Vercel header) |
 |--------|-------------------------|
@@ -22,7 +24,17 @@ This project uses `trailingSlash: true` on Vercel; prefer the trailing slash. Re
 | `longitude` | `x-vercel-ip-longitude` |
 | `timezone` | `x-vercel-ip-timezone` |
 | `ip` | `x-forwarded-for` (first address if comma-separated) |
-| `source` | `vercel_header` if any of the above is non-null; otherwise `unknown` |
+| `source` | `vercel_header` if any **Vercel** field in this block is non-null; otherwise `unknown` (currency does not affect `source`) |
+
+**Currency (bundled lookup by `country`):**
+
+| Field | Source |
+|--------|--------|
+| `currencyCode` | [`data/country-currency.json`](data/country-currency.json) — ISO 4217, `null` if `country` is missing or not in map |
+| `currencyName` | Same |
+| `currencyCountryName` | Display name for that map row (e.g. for labels); `null` if no map entry |
+
+Currency is **indicative** (usual currency for that ISO country). Wrong IP country implies wrong currency. The map is built from [`temp/country_to_currency_map.csv`](temp/country_to_currency_map.csv); regenerate with `node scripts/build-country-currency.mjs` (duplicate `CountryCode` in CSV: last row wins). Keys such as `USAF` exist only for non-standard codes; normal `US` traffic uses the `US` row.
 
 **CORS:** Browser calls must send an `Origin` that is on the server allowlist (see `api/geo.js`). Optional Vercel env **`GEO_CORS_ORIGINS`**: comma-separated extra origins, merged with the built-in list. Mobile apps and `curl` do not send `Origin`; they still receive JSON.
 
@@ -42,4 +54,4 @@ Run **`vercel dev`** from this repo. Vercel often does **not** populate geo head
 
 ### Limitations
 
-VPNs, corporate proxies, and some networks can report the wrong location or omit fields. IP geolocation is approximate. Clients should tolerate `null` values on every field.
+VPNs, corporate proxies, and some networks can report the wrong location or omit fields. IP geolocation is approximate. Clients should tolerate `null` values on every field, including currency when the country is unknown or absent from the bundled map.

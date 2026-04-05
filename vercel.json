@@ -15,6 +15,12 @@
       ]
     },
     {
+      "source": "/api/geo(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "private, no-store, no-cache" }
+      ]
+    },
+    {
       "source": "/(.*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=0, must-revalidate" }

@@ -2,17 +2,27 @@
 
 ## Coarse geo API
 
-Public **GET** endpoint that returns a coarse **ISO 3166-1 alpha-2** country code derived from the request IP at **Vercel** (no GPS, no location permission). Intended for shared use across Meliorem properties and apps.
+Public **GET** endpoint that returns **IP-derived** location fields from **Vercel** request headers (no GPS, no browser location permission). Intended for shared use across Meliorem properties and apps.
+
+**Warning:** The JSON can include **client IP**, **city**, **postal code**, **coordinates**, and related fields. Treat the response as **sensitive personal data** for privacy, retention, and compliance. Refine policy and which fields you store or forward (e.g. in Make.com) before production use.
 
 **Canonical URL (production):** `https://meliorem.co.za/api/geo/`  
 This project uses `trailingSlash: true` on Vercel; prefer the trailing slash. Requests to `/api/geo` may redirect to `/api/geo/`.
 
-**Response (JSON):**
+**Response (JSON):** Every call returns the same keys; values are strings or `null` when Vercel does not supply them.
 
-- `country`: two-letter uppercase code (e.g. `ZA`) or `null` if unknown or invalid.
-- `source`: `vercel_header` when derived from Vercel’s `x-vercel-ip-country`, otherwise `unknown`.
-
-No IP, city, or other PII is included in the body.
+| Field | Source (Vercel header) |
+|--------|-------------------------|
+| `continent` | `x-vercel-ip-continent` |
+| `country` | `x-vercel-ip-country` (normalized uppercase ISO 3166-1 alpha-2, or `null` if invalid) |
+| `countryRegion` | `x-vercel-ip-country-region` |
+| `city` | `x-vercel-ip-city` (percent-decoded; invalid encoding falls back to trimmed raw) |
+| `postalCode` | `x-vercel-ip-postal-code` |
+| `latitude` | `x-vercel-ip-latitude` |
+| `longitude` | `x-vercel-ip-longitude` |
+| `timezone` | `x-vercel-ip-timezone` |
+| `ip` | `x-forwarded-for` (first address if comma-separated) |
+| `source` | `vercel_header` if any of the above is non-null; otherwise `unknown` |
 
 **CORS:** Browser calls must send an `Origin` that is on the server allowlist (see `api/geo.js`). Optional Vercel env **`GEO_CORS_ORIGINS`**: comma-separated extra origins, merged with the built-in list. Mobile apps and `curl` do not send `Origin`; they still receive JSON.
 
@@ -28,8 +38,8 @@ The second command should show `Access-Control-Allow-Origin` echoing the whiteli
 
 ### Local vs production
 
-Run **`vercel dev`** from this repo. Vercel often does **not** populate `x-vercel-ip-country` the same way as production, so you may see `country: null` and `source: unknown` locally. Treat **production** as the real check.
+Run **`vercel dev`** from this repo. Vercel often does **not** populate geo headers the same way as production, so many fields may be `null` and `source` may be `unknown` locally. Treat **production** as the real check.
 
 ### Limitations
 
-VPNs, corporate proxies, and some networks can report the wrong country or none. Clients should tolerate `country: null`.
+VPNs, corporate proxies, and some networks can report the wrong location or omit fields. IP geolocation is approximate. Clients should tolerate `null` values on every field.

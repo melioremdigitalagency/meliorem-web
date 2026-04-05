@@ -1,8 +1,9 @@
 /**
- * Coarse country from Vercel edge (IP-derived). No GPS, no client PII in the body.
+ * IP-derived geo from Vercel edge headers (see Vercel request headers docs).
+ * Response can include approximate location and client IP; consumers own privacy and retention.
  *
- * Local `vercel dev` often omits or fakes `x-vercel-ip-country`; use production to validate.
- * VPNs, corporate egress, and mobile carriers can skew or hide country. Returns null when unknown.
+ * Local `vercel dev` often omits or fakes headers; use production to validate.
+ * VPNs, corporate egress, and mobile carriers can skew or hide values. Fields are null when unknown.
  */
 
 export const config = {
@@ -37,6 +38,67 @@ function normalizeCountry(raw) {
   const code = raw.trim().toUpperCase();
   if (!ISO_ALPHA2.test(code)) return null;
   return code;
+}
+
+function trimmedOrNull(raw) {
+  if (raw == null || typeof raw !== 'string') return null;
+  const t = raw.trim();
+  return t === '' ? null : t;
+}
+
+function firstForwardedForIp(raw) {
+  const t = trimmedOrNull(raw);
+  if (!t) return null;
+  const first = t.split(',')[0];
+  const ip = first.trim();
+  return ip === '' ? null : ip;
+}
+
+function decodeCity(raw) {
+  const t = trimmedOrNull(raw);
+  if (!t) return null;
+  try {
+    return decodeURIComponent(t.replace(/\+/g, ' '));
+  } catch {
+    return t;
+  }
+}
+
+function buildGeoPayload(request) {
+  const continent = trimmedOrNull(request.headers.get('x-vercel-ip-continent'));
+  const country = normalizeCountry(request.headers.get('x-vercel-ip-country'));
+  const countryRegion = trimmedOrNull(request.headers.get('x-vercel-ip-country-region'));
+  const city = decodeCity(request.headers.get('x-vercel-ip-city'));
+  const postalCode = trimmedOrNull(request.headers.get('x-vercel-ip-postal-code'));
+  const latitude = trimmedOrNull(request.headers.get('x-vercel-ip-latitude'));
+  const longitude = trimmedOrNull(request.headers.get('x-vercel-ip-longitude'));
+  const timezone = trimmedOrNull(request.headers.get('x-vercel-ip-timezone'));
+  const ip = firstForwardedForIp(request.headers.get('x-forwarded-for'));
+
+  const hasAny = Boolean(
+    continent ||
+      country ||
+      countryRegion ||
+      city ||
+      postalCode ||
+      latitude ||
+      longitude ||
+      timezone ||
+      ip,
+  );
+
+  return {
+    continent,
+    country,
+    countryRegion,
+    city,
+    postalCode,
+    latitude,
+    longitude,
+    timezone,
+    ip,
+    source: hasAny ? 'vercel_header' : 'unknown',
+  };
 }
 
 function corsHeadersForRequest(request, allowedOrigins) {
@@ -83,14 +145,7 @@ export default function handler(request) {
       return jsonResponse({ error: 'method_not_allowed' }, 405, cors);
     }
 
-    const rawCountry = request.headers.get('x-vercel-ip-country');
-    const country = normalizeCountry(rawCountry);
-    const payload = {
-      country,
-      source: country ? 'vercel_header' : 'unknown',
-    };
-
-    return jsonResponse(payload, 200, cors);
+    return jsonResponse(buildGeoPayload(request), 200, cors);
   } catch {
     return jsonResponse({ error: 'internal_error' }, 500, {});
   }

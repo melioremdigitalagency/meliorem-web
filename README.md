@@ -36,14 +36,15 @@ This project uses `trailingSlash: true` on Vercel; prefer the trailing slash. Re
 
 Currency is **indicative** (usual currency for that ISO country). Wrong IP country implies wrong currency. The map is built from [`temp/country_to_currency_map.csv`](temp/country_to_currency_map.csv); regenerate with `node scripts/build-country-currency.mjs` (duplicate `CountryCode` in CSV: last row wins). Keys such as `USAF` exist only for non-standard codes; normal `US` traffic uses the `US` row.
 
-**CORS:** Browser calls must send an `Origin` that is on the server allowlist (see `api/geo.js`). Optional Vercel env **`GEO_CORS_ORIGINS`**: comma-separated extra origins, merged with the built-in list. Mobile apps and `curl` do not send `Origin`; they still receive JSON.
+**CORS:** Browser calls must send an `Origin` the server allows: production domains in [`api/geo.js`](api/geo.js), any **`https://*.vercel.app`** preview host (HTTPS only), plus optional env **`GEO_CORS_ORIGINS`** (comma-separated extras). Mobile apps and `curl` do not send `Origin`; they still receive JSON. Call **`https://www.meliorem.co.za/api/geo/`** (not apex) to avoid a 307 redirect that can break browser CORS.
 
 ### Testing with curl
 
 ```bash
 curl -sS "https://meliorem.co.za/api/geo/"
-curl -sS -H "Origin: https://www.debt-and-credit.co.za" -i "https://meliorem.co.za/api/geo/"
-curl -sS -H "Origin: https://evil.example" -i "https://meliorem.co.za/api/geo/"
+curl -sS -H "Origin: https://www.debt-and-credit.co.za" -i "https://www.meliorem.co.za/api/geo/"
+curl -sS -H "Origin: https://onepagebudget-d1gjix787-meliorem-agencys-projects.vercel.app" -i "https://www.meliorem.co.za/api/geo/"
+curl -sS -H "Origin: https://evil.example" -i "https://www.meliorem.co.za/api/geo/"
 ```
 
 The second command should show `Access-Control-Allow-Origin` echoing the whitelisted origin. The third should omit that header (browsers block cross-origin reads; `curl` still prints the body).

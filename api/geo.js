@@ -36,6 +36,37 @@ function buildAllowedOriginSet() {
   return set;
 }
 
+/** Any HTTPS Vercel preview/staging host (*.vercel.app). */
+function isVercelAppOrigin(origin) {
+  try {
+    const url = new URL(origin);
+    if (url.protocol !== 'https:') return false;
+    const host = url.hostname.toLowerCase();
+    return host === 'vercel.app' || host.endsWith('.vercel.app');
+  } catch {
+    return false;
+  }
+}
+
+function isOriginAllowed(origin, allowedOrigins) {
+  if (!origin) return false;
+  if (allowedOrigins.has(origin)) return true;
+  return isVercelAppOrigin(origin);
+}
+
+function corsHeadersForRequest(request, allowedOrigins) {
+  const origin = request.headers.get('Origin');
+  if (!isOriginAllowed(origin, allowedOrigins)) {
+    return {};
+  }
+  return {
+    'Access-Control-Allow-Origin': origin,
+    'Access-Control-Allow-Methods': 'GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    Vary: 'Origin',
+  };
+}
+
 function normalizeCountry(raw) {
   if (raw == null || typeof raw !== 'string') return null;
   const code = raw.trim().toUpperCase();
@@ -106,19 +137,6 @@ function buildGeoPayload(request) {
     currencyName: currencyEntry?.currencyName ?? null,
     currencyCountryName: currencyEntry?.countryName ?? null,
     source: hasAny ? 'vercel_header' : 'unknown',
-  };
-}
-
-function corsHeadersForRequest(request, allowedOrigins) {
-  const origin = request.headers.get('Origin');
-  if (!origin || !allowedOrigins.has(origin)) {
-    return {};
-  }
-  return {
-    'Access-Control-Allow-Origin': origin,
-    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    Vary: 'Origin',
   };
 }
 
